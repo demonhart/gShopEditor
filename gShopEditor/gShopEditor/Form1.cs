@@ -851,9 +851,7 @@ namespace gShopEditor
                         write.Write(gshop.items[i].main_type);
                         write.Write(gshop.items[i].sub_type);
                         write.Write(gshop.items[i].icon);
-                        if (gshop.items[i].icon.Length < 128)
-                            for (int j = gshop.items[i].icon.Length; j < 128; j++)
-                                write.Write((byte)0);
+                        getWriteNull(write, gshop.items[i].icon.Length, 128);
                         write.Write(gshop.items[i].item_id);
                         write.Write(gshop.items[i].item_count);
                         for (int j = 0; j < 4; j++)
@@ -864,32 +862,31 @@ namespace gShopEditor
                         }
                         write.Write(gshop.items[i].props);
                         write.Write(gshop.items[i].desc);
-                        if (gshop.items[i].desc.Length < 1024)
-                            for (int j = gshop.items[i].desc.Length; j < 1024; j++)
-                                write.Write((byte)0);
+                        getWriteNull(write, gshop.items[i].desc.Length, 1024);
                         write.Write(gshop.items[i].name);
-                        if (gshop.items[i].name.Length < 64)
-                            for (int j = gshop.items[i].name.Length; j < 64; j++)
-                                write.Write((byte)0);
+                        getWriteNull(write, gshop.items[i].name.Length, 64);
                     }
                     for (int i = 0; i < 8; i++)
                     {
                         write.Write(gshop.cats[i].cat_name);
-                        if (gshop.cats[i].cat_name.Length < 128)
-                            for (int j = gshop.cats[i].cat_name.Length; j < 128; j++)
-                                write.Write((byte)0);
+                        getWriteNull(write, gshop.cats[i].cat_name.Length, 128);
                         write.Write(gshop.cats[i].sub_cat_count);
                         for (int j = 0; j < gshop.cats[i].sub_cat_count; j++)
                         {
                             write.Write(gshop.cats[i].sub_cat_name[j]);
-                            if (gshop.cats[i].sub_cat_name[j].Length < 128)
-                                for (int k = gshop.cats[i].sub_cat_name[j].Length; k < 128; k++)
-                                    write.Write((byte)0);
+                            getWriteNull(write, gshop.cats[i].sub_cat_name[j].Length, 128);
                         }
                     }
                     write.Close();
                 }
             }
+        }
+
+        private void getWriteNull(BinaryWriter write, int data_length, int max_length)
+        {
+            if (data_length < max_length)
+                for (int i = data_length; i < max_length; i++)
+                    write.Write((byte)0);
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -1154,9 +1151,7 @@ namespace gShopEditor
                         write.Write(gshop14x_client.items[i].main_type);
                         write.Write(gshop14x_client.items[i].sub_type);
                         write.Write(gshop14x_client.items[i].icon);
-                        if (gshop14x_client.items[i].icon.Length < 128)
-                            for (int j = gshop14x_client.items[i].icon.Length; j < 128; j++)
-                                write.Write((byte)0);
+                        getWriteNull(write, gshop14x_client.items[i].icon.Length, 128);
                         write.Write(gshop14x_client.items[i].item_id);
                         write.Write(gshop14x_client.items[i].item_count);
                         for (int j = 0; j < 4; j++)
@@ -1171,13 +1166,9 @@ namespace gShopEditor
                             write.Write(gshop14x_client.items[i].sell_options[j].flag);
                         }
                         write.Write(gshop14x_client.items[i].desc);
-                        if (gshop14x_client.items[i].desc.Length < 1024)
-                            for (int j = gshop14x_client.items[i].desc.Length; j < 1024; j++)
-                                write.Write((byte)0);
+                        getWriteNull(write, gshop14x_client.items[i].desc.Length, 1024);
                         write.Write(gshop14x_client.items[i].name);
-                        if (gshop14x_client.items[i].name.Length < 64)
-                            for (int j = gshop14x_client.items[i].name.Length; j < 64; j++)
-                                write.Write((byte)0);
+                        getWriteNull(write, gshop14x_client.items[i].name.Length, 64);
                         write.Write(gshop14x_client.items[i].idGift);
                         write.Write(gshop14x_client.items[i].iGiftNum);
                         write.Write(gshop14x_client.items[i].iGiftTime);
@@ -1186,16 +1177,12 @@ namespace gShopEditor
                     for (int i = 0; i < 8; i++)
                     {
                         write.Write(gshop14x_client.cats[i].cat_name);
-                        if (gshop14x_client.cats[i].cat_name.Length < 128)
-                            for (int j = gshop14x_client.cats[i].cat_name.Length; j < 128; j++)
-                                write.Write((byte)0);
+                        getWriteNull(write, gshop14x_client.cats[i].cat_name.Length, 128);
                         write.Write(gshop14x_client.cats[i].sub_cat_count);
                         for (int j = 0; j < gshop14x_client.cats[i].sub_cat_count; j++)
                         {
                             write.Write(gshop14x_client.cats[i].sub_cat_name[j]);
-                            if (gshop14x_client.cats[i].sub_cat_name[j].Length < 128)
-                                for (int k = gshop14x_client.cats[i].sub_cat_name[j].Length; k < 128; k++)
-                                    write.Write((byte)0);
+                            getWriteNull(write, gshop14x_client.cats[i].sub_cat_name[j].Length, 128);
                         }
                     }
                     write.Close();
