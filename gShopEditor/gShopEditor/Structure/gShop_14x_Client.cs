@@ -2,7 +2,7 @@
 
 namespace gShopEditor.Structure
 {
-    public class gShop_1
+    public class gShop_14x_Client
     {
         public int timestamp;
         public int item_count;

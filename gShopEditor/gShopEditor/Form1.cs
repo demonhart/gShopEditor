@@ -21,7 +21,8 @@ namespace gShopEditor
 
         public Elements element = new Elements();
         public gShop gshop = new gShop();
-        public gShop_1 gshop14x = new gShop_1();
+        gShop_14x_Client gshop14x_client = new gShop_14x_Client();
+        gShop_14x_Server gshop14x_server = new gShop_14x_Server();
 
         private void открытьToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -1113,89 +1114,157 @@ namespace gShopEditor
             };
             if (save.ShowDialog() != DialogResult.Cancel)
             {
-                gshop14x.timestamp = gshop.timestamp;
-                gshop14x.item_count = gshop.item_count;
-                gshop14x.items = new List<Items_1>(gshop14x.item_count);
+                gshop14x_client.timestamp = gshop.timestamp;
+                gshop14x_client.item_count = gshop.item_count;
+                gshop14x_client.items = new List<Items_1>(gshop14x_client.item_count);
                 for (int i = 0; i < gshop.item_count; i++)
                 {
-                    gshop14x.items.Add(new Items_1());
-                    gshop14x.items[i].local_id = i + 1;
-                    gshop14x.items[i].main_type = gshop.items[i].main_type;
-                    gshop14x.items[i].sub_type = gshop.items[i].sub_type;
-                    gshop14x.items[i].icon = gshop.items[i].icon;
-                    gshop14x.items[i].item_id = gshop.items[i].item_id;
-                    gshop14x.items[i].item_count = gshop.items[i].item_count;
-                    gshop14x.items[i].sell_options = new List<Sell_options_1>(4);
+                    gshop14x_client.items.Add(new Items_1());
+                    gshop14x_client.items[i].local_id = i + 1;
+                    gshop14x_client.items[i].main_type = gshop.items[i].main_type;
+                    gshop14x_client.items[i].sub_type = gshop.items[i].sub_type;
+                    gshop14x_client.items[i].icon = gshop.items[i].icon;
+                    gshop14x_client.items[i].item_id = gshop.items[i].item_id;
+                    gshop14x_client.items[i].item_count = gshop.items[i].item_count;
+                    gshop14x_client.items[i].sell_options = new List<Sell_options_1>(4);
                     for (int j = 0; j < 4; j++)
                     {
-                        gshop14x.items[i].sell_options.Add(new Sell_options_1());
-                        gshop14x.items[i].sell_options[j].price = (uint)gshop.items[i].sell_options[j].price;
-                        gshop14x.items[i].sell_options[j].end_time = 0;
-                        gshop14x.items[i].sell_options[j].time = (uint)gshop.items[i].sell_options[j].until_time;
-                        gshop14x.items[i].sell_options[j].start_time = 0;
-                        gshop14x.items[i].sell_options[j].type = -1;
-                        gshop14x.items[i].sell_options[j].day = 0;
-                        gshop14x.items[i].sell_options[j].status = 0;
-                        gshop14x.items[i].sell_options[j].flag = 0;
+                        gshop14x_client.items[i].sell_options.Add(new Sell_options_1());
+                        gshop14x_client.items[i].sell_options[j].price = (uint)gshop.items[i].sell_options[j].price;
+                        gshop14x_client.items[i].sell_options[j].end_time = 0;
+                        gshop14x_client.items[i].sell_options[j].time = (uint)gshop.items[i].sell_options[j].until_time;
+                        gshop14x_client.items[i].sell_options[j].start_time = 0;
+                        gshop14x_client.items[i].sell_options[j].type = -1;
+                        gshop14x_client.items[i].sell_options[j].day = 0;
+                        gshop14x_client.items[i].sell_options[j].status = 0;
+                        gshop14x_client.items[i].sell_options[j].flag = 0;
                     }
-                    gshop14x.items[i].desc = gshop.items[i].desc;
-                    gshop14x.items[i].name = gshop.items[i].name;
+                    gshop14x_client.items[i].desc = gshop.items[i].desc;
+                    gshop14x_client.items[i].name = gshop.items[i].name;
                 }
-                gshop14x.cats = gshop.cats;
+                gshop14x_client.cats = gshop.cats;
                     
                 using (BinaryWriter write = new BinaryWriter(new FileStream(save.FileName, FileMode.Create, FileAccess.Write), Encoding.Unicode))
                 {
-                    write.Write(gshop14x.timestamp);
-                    write.Write(gshop14x.item_count);
-                    for (int i = 0; i < gshop14x.item_count; i++)
+                    write.Write(gshop14x_client.timestamp);
+                    write.Write(gshop14x_client.item_count);
+                    for (int i = 0; i < gshop14x_client.item_count; i++)
                     {
-                        write.Write(gshop14x.items[i].local_id);
-                        write.Write(gshop14x.items[i].main_type);
-                        write.Write(gshop14x.items[i].sub_type);
-                        write.Write(gshop14x.items[i].icon);
-                        if (gshop14x.items[i].icon.Length < 128)
-                            for (int j = gshop14x.items[i].icon.Length; j < 128; j++)
+                        write.Write(gshop14x_client.items[i].local_id);
+                        write.Write(gshop14x_client.items[i].main_type);
+                        write.Write(gshop14x_client.items[i].sub_type);
+                        write.Write(gshop14x_client.items[i].icon);
+                        if (gshop14x_client.items[i].icon.Length < 128)
+                            for (int j = gshop14x_client.items[i].icon.Length; j < 128; j++)
                                 write.Write((byte)0);
-                        write.Write(gshop14x.items[i].item_id);
-                        write.Write(gshop14x.items[i].item_count);
+                        write.Write(gshop14x_client.items[i].item_id);
+                        write.Write(gshop14x_client.items[i].item_count);
                         for (int j = 0; j < 4; j++)
                         {
-                            write.Write(gshop14x.items[i].sell_options[j].price);
-                            write.Write(gshop14x.items[i].sell_options[j].end_time);
-                            write.Write(gshop14x.items[i].sell_options[j].time);
-                            write.Write(gshop14x.items[i].sell_options[j].start_time);
-                            write.Write(gshop14x.items[i].sell_options[j].type);
-                            write.Write(gshop14x.items[i].sell_options[j].day);
-                            write.Write(gshop14x.items[i].sell_options[j].status);
-                            write.Write(gshop14x.items[i].sell_options[j].flag);
+                            write.Write(gshop14x_client.items[i].sell_options[j].price);
+                            write.Write(gshop14x_client.items[i].sell_options[j].end_time);
+                            write.Write(gshop14x_client.items[i].sell_options[j].time);
+                            write.Write(gshop14x_client.items[i].sell_options[j].start_time);
+                            write.Write(gshop14x_client.items[i].sell_options[j].type);
+                            write.Write(gshop14x_client.items[i].sell_options[j].day);
+                            write.Write(gshop14x_client.items[i].sell_options[j].status);
+                            write.Write(gshop14x_client.items[i].sell_options[j].flag);
                         }
-                        write.Write(gshop14x.items[i].desc);
-                        if (gshop14x.items[i].desc.Length < 1024)
-                            for (int j = gshop14x.items[i].desc.Length; j < 1024; j++)
+                        write.Write(gshop14x_client.items[i].desc);
+                        if (gshop14x_client.items[i].desc.Length < 1024)
+                            for (int j = gshop14x_client.items[i].desc.Length; j < 1024; j++)
                                 write.Write((byte)0);
-                        write.Write(gshop14x.items[i].name);
-                        if (gshop14x.items[i].name.Length < 64)
-                            for (int j = gshop14x.items[i].name.Length; j < 64; j++)
+                        write.Write(gshop14x_client.items[i].name);
+                        if (gshop14x_client.items[i].name.Length < 64)
+                            for (int j = gshop14x_client.items[i].name.Length; j < 64; j++)
                                 write.Write((byte)0);
-                        write.Write(gshop14x.items[i].idGift);
-                        write.Write(gshop14x.items[i].iGiftNum);
-                        write.Write(gshop14x.items[i].iGiftTime);
-                        write.Write(gshop14x.items[i].iLogPrice);
+                        write.Write(gshop14x_client.items[i].idGift);
+                        write.Write(gshop14x_client.items[i].iGiftNum);
+                        write.Write(gshop14x_client.items[i].iGiftTime);
+                        write.Write(gshop14x_client.items[i].iLogPrice);
                     }
                     for (int i = 0; i < 8; i++)
                     {
-                        write.Write(gshop14x.cats[i].cat_name);
-                        if (gshop14x.cats[i].cat_name.Length < 128)
-                            for (int j = gshop14x.cats[i].cat_name.Length; j < 128; j++)
+                        write.Write(gshop14x_client.cats[i].cat_name);
+                        if (gshop14x_client.cats[i].cat_name.Length < 128)
+                            for (int j = gshop14x_client.cats[i].cat_name.Length; j < 128; j++)
                                 write.Write((byte)0);
-                        write.Write(gshop14x.cats[i].sub_cat_count);
-                        for (int j = 0; j < gshop14x.cats[i].sub_cat_count; j++)
+                        write.Write(gshop14x_client.cats[i].sub_cat_count);
+                        for (int j = 0; j < gshop14x_client.cats[i].sub_cat_count; j++)
                         {
-                            write.Write(gshop14x.cats[i].sub_cat_name[j]);
-                            if (gshop14x.cats[i].sub_cat_name[j].Length < 128)
-                                for (int k = gshop14x.cats[i].sub_cat_name[j].Length; k < 128; k++)
+                            write.Write(gshop14x_client.cats[i].sub_cat_name[j]);
+                            if (gshop14x_client.cats[i].sub_cat_name[j].Length < 128)
+                                for (int k = gshop14x_client.cats[i].sub_cat_name[j].Length; k < 128; k++)
                                     write.Write((byte)0);
                         }
+                    }
+                    write.Close();
+                }
+            }
+        }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog save = new SaveFileDialog()
+            {
+                InitialDirectory = "",
+                Filter = "gshopsev.data|*gshopsev*.data|Все файлы|*.*",
+                Title = "Сохранение gshopsev.data"
+            };
+            if (save.ShowDialog() != DialogResult.Cancel)
+            {
+                gshop14x_server.timestamp = gshop.timestamp;
+                gshop14x_server.item_count = gshop.item_count;
+                gshop14x_server.items = new List<Items_2>(gshop14x_server.item_count);
+                for (int i = 0; i < gshop.item_count; i++)
+                {
+                    gshop14x_server.items.Add(new Items_2());
+                    gshop14x_server.items[i].local_id = i + 1;
+                    gshop14x_server.items[i].main_type = gshop.items[i].main_type;
+                    gshop14x_server.items[i].sub_type = gshop.items[i].sub_type;
+                    gshop14x_server.items[i].item_id = gshop.items[i].item_id;
+                    gshop14x_server.items[i].item_count = gshop.items[i].item_count;
+                    gshop14x_server.items[i].sell_options = new List<Sell_options_1>(4);
+                    for (int j = 0; j < 4; j++)
+                    {
+                        gshop14x_server.items[i].sell_options.Add(new Sell_options_1());
+                        gshop14x_server.items[i].sell_options[j].price = (uint)gshop.items[i].sell_options[j].price;
+                        gshop14x_server.items[i].sell_options[j].end_time = 0;
+                        gshop14x_server.items[i].sell_options[j].time = (uint)gshop.items[i].sell_options[j].until_time;
+                        gshop14x_server.items[i].sell_options[j].start_time = 0;
+                        gshop14x_server.items[i].sell_options[j].type = -1;
+                        gshop14x_server.items[i].sell_options[j].day = 0;
+                        gshop14x_server.items[i].sell_options[j].status = 0;
+                        gshop14x_server.items[i].sell_options[j].flag = 0;
+                    }
+                }
+
+                using (BinaryWriter write = new BinaryWriter(new FileStream(save.FileName, FileMode.Create, FileAccess.Write), Encoding.Unicode))
+                {
+                    write.Write(gshop14x_server.timestamp);
+                    write.Write(gshop14x_server.item_count);
+                    for (int i = 0; i < gshop14x_server.item_count; i++)
+                    {
+                        write.Write(gshop14x_server.items[i].local_id);
+                        write.Write(gshop14x_server.items[i].main_type);
+                        write.Write(gshop14x_server.items[i].sub_type);
+                        write.Write(gshop14x_server.items[i].item_id);
+                        write.Write(gshop14x_server.items[i].item_count);
+                        for (int j = 0; j < 4; j++)
+                        {
+                            write.Write(gshop14x_server.items[i].sell_options[j].price);
+                            write.Write(gshop14x_server.items[i].sell_options[j].end_time);
+                            write.Write(gshop14x_server.items[i].sell_options[j].time);
+                            write.Write(gshop14x_server.items[i].sell_options[j].start_time);
+                            write.Write(gshop14x_server.items[i].sell_options[j].type);
+                            write.Write(gshop14x_server.items[i].sell_options[j].day);
+                            write.Write(gshop14x_server.items[i].sell_options[j].status);
+                            write.Write(gshop14x_server.items[i].sell_options[j].flag);
+                        }
+                        write.Write(gshop14x_server.items[i].idGift);
+                        write.Write(gshop14x_server.items[i].iGiftNum);
+                        write.Write(gshop14x_server.items[i].iGiftTime);
+                        write.Write(gshop14x_server.items[i].iLogPrice);
                     }
                     write.Close();
                 }

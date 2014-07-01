@@ -35,6 +35,7 @@
             this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.открытьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.сохранитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.сохранитьВ14хToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
@@ -91,7 +92,7 @@
             this.button12 = new System.Windows.Forms.Button();
             this.button13 = new System.Windows.Forms.Button();
             this.button14 = new System.Windows.Forms.Button();
-            this.сохранитьВ14хToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -115,7 +116,8 @@
             this.файлToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.открытьToolStripMenuItem,
             this.сохранитьToolStripMenuItem,
-            this.сохранитьВ14хToolStripMenuItem});
+            this.сохранитьВ14хToolStripMenuItem,
+            this.toolStripMenuItem2});
             this.файлToolStripMenuItem.Name = "файлToolStripMenuItem";
             this.файлToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.файлToolStripMenuItem.Text = "Файл";
@@ -123,16 +125,23 @@
             // открытьToolStripMenuItem
             // 
             this.открытьToolStripMenuItem.Name = "открытьToolStripMenuItem";
-            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.открытьToolStripMenuItem.Text = "Открыть";
             this.открытьToolStripMenuItem.Click += new System.EventHandler(this.открытьToolStripMenuItem_Click);
             // 
             // сохранитьToolStripMenuItem
             // 
             this.сохранитьToolStripMenuItem.Name = "сохранитьToolStripMenuItem";
-            this.сохранитьToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
+            this.сохранитьToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.сохранитьToolStripMenuItem.Text = "Сохранить";
             this.сохранитьToolStripMenuItem.Click += new System.EventHandler(this.сохранитьToolStripMenuItem_Click);
+            // 
+            // сохранитьВ14хToolStripMenuItem
+            // 
+            this.сохранитьВ14хToolStripMenuItem.Name = "сохранитьВ14хToolStripMenuItem";
+            this.сохранитьВ14хToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
+            this.сохранитьВ14хToolStripMenuItem.Text = "Сохранить в 1.4.х+ (Клиент)";
+            this.сохранитьВ14хToolStripMenuItem.Click += new System.EventHandler(this.сохранитьВ14хToolStripMenuItem_Click);
             // 
             // listBox1
             // 
@@ -698,12 +707,12 @@
             this.button14.UseVisualStyleBackColor = true;
             this.button14.Click += new System.EventHandler(this.button14_Click);
             // 
-            // сохранитьВ14хToolStripMenuItem
+            // toolStripMenuItem2
             // 
-            this.сохранитьВ14хToolStripMenuItem.Name = "сохранитьВ14хToolStripMenuItem";
-            this.сохранитьВ14хToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
-            this.сохранитьВ14хToolStripMenuItem.Text = "Сохранить в 1.4.х+";
-            this.сохранитьВ14хToolStripMenuItem.Click += new System.EventHandler(this.сохранитьВ14хToolStripMenuItem_Click);
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(226, 22);
+            this.toolStripMenuItem2.Text = "Сохранить в 1.4.х+ (Сервер)";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
             // Form1
             // 
@@ -817,6 +826,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn item_local_id;
         private System.Windows.Forms.DataGridViewTextBoxColumn item_name;
         private System.Windows.Forms.ToolStripMenuItem сохранитьВ14хToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
     }
 }
 
