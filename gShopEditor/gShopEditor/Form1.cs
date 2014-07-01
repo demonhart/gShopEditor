@@ -536,28 +536,45 @@ namespace gShopEditor
                 element.soulgems[i].name = read.ReadBytes(64);
                 read.BaseStream.Position += 128;
                 element.soulgems[i].surface = read.ReadBytes(128);
-                read.BaseStream.Position += 108;
+                if (element.version <= 60)
+                    read.BaseStream.Position += 108;
             }
             element.list37_count = read.ReadInt32();
-            getChangePos(read, element.list37_count, 84);
+            if (element.version <= 60)
+                getChangePos(read, element.list37_count, 84);
             element.list38_count = read.ReadInt32();
-            getChangePos(read, element.list38_count, 196);
+            if (element.version <= 60)
+                getChangePos(read, element.list38_count, 196);
             element.list39_count = read.ReadInt32();
-            getChangePos(read, element.list39_count, 1500);
+            if (element.version <= 12)
+                getChangePos(read, element.list39_count, 1500);
+            else if (element.version == 60)
+                getChangePos(read, element.list39_count, 1552);
             element.list40_count = read.ReadInt32();
-            getChangePos(read, element.list40_count, 72);
+            if (element.version <= 60)
+                getChangePos(read, element.list40_count, 72);
             element.list41_count = read.ReadInt32();
-            getChangePos(read, element.list41_count, 1224);
+            if (element.version <= 12)
+                getChangePos(read, element.list41_count, 1224);
+            else if (element.version == 60)
+                getChangePos(read, element.list41_count, 2280);
             element.list42_count = read.ReadInt32();
-            getChangePos(read, element.list42_count, 72);
+            if (element.version <= 60)
+                getChangePos(read, element.list42_count, 72);
             element.list43_count = read.ReadInt32();
-            getChangePos(read, element.list43_count, 72);
+            if (element.version <= 60)
+                getChangePos(read, element.list43_count, 72);
             element.list44_count = read.ReadInt32();
-            getChangePos(read, element.list44_count, 200);
+            if (element.version <= 60)
+                getChangePos(read, element.list44_count, 200);
             element.list45_count = read.ReadInt32();
-            getChangePos(read, element.list45_count, 200);
+            if (element.version <= 60)
+                getChangePos(read, element.list45_count, 200);
             element.list46_count = read.ReadInt32();
-            getChangePos(read, element.list46_count, 196);
+            if (element.version <= 12)
+                getChangePos(read, element.list46_count, 196);
+            else if (element.version == 60)
+                getChangePos(read, element.list46_count, 1092);
             element.list47_count = read.ReadInt32();
             getChangePos(read, element.list47_count, 196);
             element.list48_count = read.ReadInt32();
@@ -902,7 +919,7 @@ namespace gShopEditor
                 textBox6.Text = getConvertTimestampToString((int)gshop_14x_client.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].sell_options[0].end_time);
                 textBox7.Text = getConvertSecondsToString((int)gshop_14x_client.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].sell_options[0].start_time);
                 richTextBox1.Text = getDecoding(gshop_14x_client.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].desc, "Unicode");
-                switch (gshop_14x_client.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].props)
+                switch (gshop_14x_client.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].sell_options[0].status)
                 {
                     case 0:
                         {

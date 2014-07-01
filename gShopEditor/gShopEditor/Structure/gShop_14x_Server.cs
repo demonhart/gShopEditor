@@ -21,7 +21,6 @@ namespace gShopEditor.Structure
         public uint item_id;
         public uint item_count;
         public List<Sell_options_1> sell_options;
-        public uint props;
         public int idGift;
         public int iGiftNum;
         public int iGiftTime;
