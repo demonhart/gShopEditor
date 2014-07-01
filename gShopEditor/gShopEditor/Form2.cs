@@ -14,7 +14,9 @@ namespace gShopEditor
 
         Form1 frm = new Form1();
         public int cat_index, sub_cat_index;
-        public gShop shop = new gShop();
+        public int type = -1;
+        public gShop_126 shop_126 = new gShop_126();
+        public gShop_14x_Client shop_14x_client = new gShop_14x_Client();
         public Elements elem = new Elements();
         int count = 0;
 
@@ -384,39 +386,89 @@ namespace gShopEditor
 
         private void button1_Click(object sender, EventArgs e)
         {
-            int max_id = shop.item_count;
-            for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
+            if (type == 1)
             {
-                if (dataGridView1.Rows[i].Selected)
+                int max_id = shop_126.item_count;
+                for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
                 {
-                    shop.items.Add(new Items());
-                    shop.items[max_id].local_id = max_id;
-                    shop.items[max_id].main_type = cat_index;
-                    shop.items[max_id].sub_type = sub_cat_index;
-                    shop.items[max_id].icon = new byte[128];
-                    shop.items[max_id].item_id = Convert.ToUInt32(dataGridView1[0, i].Value);
-                    shop.items[max_id].item_count = 1;
-                    shop.items[max_id].sell_options = new List<Sell_options>(4);
-                    for (int j = 0; j < 4; j++)
+                    if (dataGridView1.Rows[i].Selected)
                     {
-                        shop.items[max_id].sell_options.Add(new Sell_options());
-                        if (j == 0)
-                            shop.items[max_id].sell_options[j].price = 100;
-                        else
-                            shop.items[max_id].sell_options[j].price = 0;
-                        shop.items[max_id].sell_options[j].until_time = 0;
-                        shop.items[max_id].sell_options[j].time = 0;
+                        shop_126.items.Add(new Items());
+                        shop_126.items[max_id].local_id = max_id;
+                        shop_126.items[max_id].main_type = cat_index;
+                        shop_126.items[max_id].sub_type = sub_cat_index;
+                        shop_126.items[max_id].icon = new byte[128];
+                        shop_126.items[max_id].item_id = Convert.ToUInt32(dataGridView1[0, i].Value);
+                        shop_126.items[max_id].item_count = 1;
+                        shop_126.items[max_id].sell_options = new List<Sell_options>(4);
+                        for (int j = 0; j < 4; j++)
+                        {
+                            shop_126.items[max_id].sell_options.Add(new Sell_options());
+                            if (j == 0)
+                                shop_126.items[max_id].sell_options[j].price = 100;
+                            else
+                                shop_126.items[max_id].sell_options[j].price = 0;
+                            shop_126.items[max_id].sell_options[j].until_time = 0;
+                            shop_126.items[max_id].sell_options[j].time = 0;
+                        }
+                        shop_126.items[max_id].props = 1;
+                        shop_126.items[max_id].desc = new byte[1024];
+                        shop_126.items[max_id].name = frm.getEncoding(dataGridView1[1, i].Value.ToString(), "Unicode");
+                        frm.getGrid().Rows.Add(frm.getGrid().Rows.Count, max_id, dataGridView1[1, i].Value);
+                        max_id++;
                     }
-                    shop.items[max_id].props = 1;
-                    shop.items[max_id].desc = new byte[1024];
-                    shop.items[max_id].name = frm.getEncoding(dataGridView1[1, i].Value.ToString(), "Unicode");
-                    frm.getGrid().Rows.Add(frm.getGrid().Rows.Count, max_id, dataGridView1[1, i].Value);
-                    max_id++;
                 }
+                shop_126.item_count = max_id;
+                frm.gshop_126 = shop_126;
             }
-            shop.item_count = max_id;
-            frm.gshop = shop;
-            //this.Close();
+            else if (type==2)
+            {
+                int max_id = shop_14x_client.item_count;
+                for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
+                {
+                    if (dataGridView1.Rows[i].Selected)
+                    {
+                        shop_14x_client.items.Add(new Items_1());
+                        shop_14x_client.items[max_id].local_id = max_id;
+                        shop_14x_client.items[max_id].main_type = cat_index;
+                        shop_14x_client.items[max_id].sub_type = sub_cat_index;
+                        shop_14x_client.items[max_id].icon = new byte[128];
+                        shop_14x_client.items[max_id].item_id = Convert.ToUInt32(dataGridView1[0, i].Value);
+                        shop_14x_client.items[max_id].item_count = 1;
+                        shop_14x_client.items[max_id].sell_options = new List<Sell_options_1>(4);
+                        for (int j = 0; j < 4; j++)
+                        {
+                            shop_14x_client.items[max_id].sell_options.Add(new Sell_options_1());
+                            if (j == 0)
+                                shop_14x_client.items[max_id].sell_options[j].price = 100;
+                            else
+                                shop_14x_client.items[max_id].sell_options[j].price = 0;
+                            shop_14x_client.items[max_id].sell_options[j].end_time = 0;
+                            shop_14x_client.items[max_id].sell_options[j].time = 0;
+                            shop_14x_client.items[max_id].sell_options[j].start_time = 0;
+                            shop_14x_client.items[max_id].sell_options[j].type = 0;
+                            shop_14x_client.items[max_id].sell_options[j].day = 0;
+                            shop_14x_client.items[max_id].sell_options[j].status = 1;
+                            shop_14x_client.items[max_id].sell_options[j].flag = 0;
+                        }
+                        shop_14x_client.items[max_id].desc = new byte[1024];
+                        shop_14x_client.items[max_id].name = frm.getEncoding(dataGridView1[1, i].Value.ToString(), "Unicode");
+                        shop_14x_client.items[max_id].idGift = 0;
+                        shop_14x_client.items[max_id].iGiftNum = 0;
+                        shop_14x_client.items[max_id].iGiftTime = 0;
+                        shop_14x_client.items[max_id].iLogPrice = 0;
+                        frm.getGrid().Rows.Add(frm.getGrid().Rows.Count, max_id, dataGridView1[1, i].Value);
+                        max_id++;
+                    }
+                }
+                shop_14x_client.item_count = max_id;
+                frm.gshop_14x_client = shop_14x_client;
+            }
+        }
+
+        private void Form2_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            frm.getGrid().Update();
         }
     }
 }

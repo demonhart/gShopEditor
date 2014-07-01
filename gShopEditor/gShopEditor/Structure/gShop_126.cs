@@ -5,7 +5,7 @@ using System.Text;
 
 namespace gShopEditor.Structure
 {
-    public class gShop
+    public class gShop_126
     {
         public int timestamp;
         public int item_count;

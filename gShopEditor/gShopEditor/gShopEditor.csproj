@@ -64,7 +64,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Structure\Elements.cs" />
-    <Compile Include="Structure\gShop.cs" />
+    <Compile Include="Structure\gShop_126.cs" />
     <Compile Include="Structure\gShop_14x_Client.cs" />
     <Compile Include="Structure\gShop_14x_Server.cs" />
     <EmbeddedResource Include="Form1.resx">

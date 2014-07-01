@@ -20,8 +20,8 @@ namespace gShopEditor
         }
 
         public Elements element = new Elements();
-        public gShop gshop = new gShop();
-        gShop_14x_Client gshop14x_client = new gShop_14x_Client();
+        public gShop_126 gshop_126 = new gShop_126();
+        public gShop_14x_Client gshop_14x_client = new gShop_14x_Client();
         gShop_14x_Server gshop14x_server = new gShop_14x_Server();
 
         private void открытьToolStripMenuItem_Click(object sender, EventArgs e)
@@ -36,7 +36,10 @@ namespace gShopEditor
             {
                 using (BinaryReader read = new BinaryReader(new FileStream(open.FileName, FileMode.Open, FileAccess.Read), Encoding.Unicode))
                 {
-                    gShopRead(read, gshop);
+                    if (radioButton6.Checked)
+                        gShop126Read(read, gshop_126);
+                    else if (radioButton7.Checked)
+                        gShop14xRead(read, gshop_14x_client);
                     read.Close();
                 }
             }
@@ -48,17 +51,34 @@ namespace gShopEditor
             {
                 int count = 0;
                 listBox2.Items.Clear();
-                for (int i = 0; i < gshop.cats[listBox1.SelectedIndex].sub_cat_count; i++)
+                if (radioButton6.Checked)
                 {
-                    count = 0;
-                    for (int j = 0; j < gshop.item_count; j++)
-                        if (gshop.items[j].main_type == listBox1.SelectedIndex && gshop.items[j].sub_type == i)
-                            count++;
-                    string[] name = getDecoding(gshop.cats[listBox1.SelectedIndex].sub_cat_name[i], "Unicode").Split('\0');
-                    listBox2.Items.Add(name[0] + " (" + count + ")");
+                    for (int i = 0; i < gshop_126.cats[listBox1.SelectedIndex].sub_cat_count; i++)
+                    {
+                        count = 0;
+                        for (int j = 0; j < gshop_126.item_count; j++)
+                            if (gshop_126.items[j].main_type == listBox1.SelectedIndex && gshop_126.items[j].sub_type == i)
+                                count++;
+                        string[] name = getDecoding(gshop_126.cats[listBox1.SelectedIndex].sub_cat_name[i], "Unicode").Split('\0');
+                        listBox2.Items.Add(name[0] + " (" + count + ")");
+                    }
+                    string[] names = listBox1.SelectedItem.ToString().Split(' ');
+                    textBox13.Text = names[0];
                 }
-                string[] names = listBox1.SelectedItem.ToString().Split(' ');
-                textBox13.Text = names[0];
+                else if (radioButton7.Checked)
+                {
+                    for (int i = 0; i < gshop_14x_client.cats[listBox1.SelectedIndex].sub_cat_count; i++)
+                    {
+                        count = 0;
+                        for (int j = 0; j < gshop_14x_client.item_count; j++)
+                            if (gshop_14x_client.items[j].main_type == listBox1.SelectedIndex && gshop_14x_client.items[j].sub_type == i)
+                                count++;
+                        string[] name = getDecoding(gshop_14x_client.cats[listBox1.SelectedIndex].sub_cat_name[i], "Unicode").Split('\0');
+                        listBox2.Items.Add(name[0] + " (" + count + ")");
+                    }
+                    string[] names = listBox1.SelectedItem.ToString().Split(' ');
+                    textBox13.Text = names[0];
+                }
             }                    
         }
 
@@ -68,17 +88,34 @@ namespace gShopEditor
             {
                 int count = 0;
                 dataGridView1.Rows.Clear();
-                for (int i = 0; i < gshop.item_count; i++)
+                if (radioButton6.Checked)
                 {
-                    if (gshop.items[i].main_type == listBox1.SelectedIndex && gshop.items[i].sub_type == listBox2.SelectedIndex)
+                    for (int i = 0; i < gshop_126.item_count; i++)
                     {
-                        count++;
-                        string[] name = getDecoding(gshop.items[i].name, "Unicode").Split('\0');
-                        dataGridView1.Rows.Add(count, gshop.items[i].local_id, name[0]);
+                        if (gshop_126.items[i].main_type == listBox1.SelectedIndex && gshop_126.items[i].sub_type == listBox2.SelectedIndex)
+                        {
+                            count++;
+                            string[] name = getDecoding(gshop_126.items[i].name, "Unicode").Split('\0');
+                            dataGridView1.Rows.Add(count, gshop_126.items[i].local_id, name[0]);
+                        }
                     }
+                    string[] tmp_name = listBox2.SelectedItem.ToString().Split(' ');
+                    textBox14.Text = tmp_name[0];
                 }
-                string[] tmp_name = listBox2.SelectedItem.ToString().Split(' ');
-                textBox14.Text = tmp_name[0];
+                else if (radioButton7.Checked)
+                {
+                    for (int i = 0; i < gshop_14x_client.item_count; i++)
+                    {
+                        if (gshop_14x_client.items[i].main_type == listBox1.SelectedIndex && gshop_14x_client.items[i].sub_type == listBox2.SelectedIndex)
+                        {
+                            count++;
+                            string[] name = getDecoding(gshop_14x_client.items[i].name, "Unicode").Split('\0');
+                            dataGridView1.Rows.Add(count, gshop_14x_client.items[i].local_id, name[0]);
+                        }
+                    }
+                    string[] tmp_name = listBox2.SelectedItem.ToString().Split(' ');
+                    textBox14.Text = tmp_name[0];
+                }
             }
         }
 
@@ -129,7 +166,7 @@ namespace gShopEditor
             }
         }
 
-        private void gShopRead(BinaryReader read, gShop gshop)
+        private void gShop126Read(BinaryReader read, gShop_126 gshop)
         {
             listBox1.Items.Clear();
             listBox2.Items.Clear();
@@ -178,29 +215,61 @@ namespace gShopEditor
             }
         }
 
-        public gShop getGshop()
+        private void gShop14xRead(BinaryReader read, gShop_14x_Client gshop)
         {
-            return this.gshop;
-        }
+            listBox1.Items.Clear();
+            listBox2.Items.Clear();
+            gshop.timestamp = read.ReadInt32();
+            gshop.item_count = read.ReadInt32();
+            gshop.items = new List<Items_1>(gshop.item_count);
+            for (int i = 0; i < gshop.item_count; i++)
+            {
+                gshop.items.Add(new Items_1());
+                gshop.items[i].local_id = read.ReadInt32();
+                gshop.items[i].main_type = read.ReadInt32();
+                gshop.items[i].sub_type = read.ReadInt32();
+                string[] tmp_icon = getDecoding(read.ReadBytes(128), "GBK").Split('\0');
+                gshop.items[i].icon = getEncoding(tmp_icon[0], "GBK");
+                gshop.items[i].item_id = read.ReadUInt32();
+                gshop.items[i].item_count = read.ReadUInt32();
+                gshop.items[i].sell_options = new List<Sell_options_1>(4);
+                for (int j = 0; j < 4; j++)
+                {
+                    gshop.items[i].sell_options.Add(new Sell_options_1());
+                    gshop.items[i].sell_options[j].price = read.ReadUInt32();
+                    gshop.items[i].sell_options[j].end_time = read.ReadUInt32();
+                    gshop.items[i].sell_options[j].time = read.ReadUInt32();
+                    gshop.items[i].sell_options[j].start_time = read.ReadUInt32();
+                    gshop.items[i].sell_options[j].type = read.ReadInt32();
+                    gshop.items[i].sell_options[j].day = read.ReadUInt32();
+                    gshop.items[i].sell_options[j].status = read.ReadUInt32();
+                    gshop.items[i].sell_options[j].flag = read.ReadUInt32();
+                }
+                string[] tmp_desc = getDecoding(read.ReadBytes(1024), "Unicode").Split('\0');
+                gshop.items[i].desc = getEncoding(tmp_desc[0], "Unicode");
+                string[] tmp_name = getDecoding(read.ReadBytes(64), "Unicode").Split('\0');
+                gshop.items[i].name = getEncoding(tmp_name[0], "Unicode");
+                gshop.items[i].idGift = read.ReadInt32();
+                gshop.items[i].iGiftNum = read.ReadInt32();
+                gshop.items[i].iGiftTime = read.ReadInt32();
+                gshop.items[i].iLogPrice = read.ReadInt32();
+            }
+            gshop.cats = new List<Category>(8);
+            for (int i = 0; i < 8; i++)
+            {
+                gshop.cats.Add(new Category());
+                string[] tmp_cat_name = getDecoding(read.ReadBytes(128), "Unicode").Split('\0');
+                gshop.cats[i].cat_name = getEncoding(tmp_cat_name[0], "Unicode");
+                gshop.cats[i].sub_cat_count = read.ReadInt32();
 
-        public List<Items> getItems()
-        {
-            return this.gshop.items;
-        }
-
-        public int getItemsCount()
-        {
-            return this.gshop.item_count;
-        }
-
-        public ListBox getListbox1()
-        {
-            return listBox1;
-        }
-
-        public ListBox getListbox2()
-        {
-            return listBox2;
+                gshop.cats[i].sub_cat_name = new byte[gshop.cats[i].sub_cat_count][];
+                for (int j = 0; j < gshop.cats[i].sub_cat_count; j++)
+                {
+                    string[] tmp_sub_cat_name = getDecoding(read.ReadBytes(128), "Unicode").Split('\0');
+                    gshop.cats[i].sub_cat_name[j] = getEncoding(tmp_sub_cat_name[0], "Unicode");
+                }
+                listBox1.Items.Add(Encoding.Unicode.GetString(gshop.cats[i].cat_name).Replace("\0", string.Empty) + " (" + gshop.cats[i].sub_cat_count + ")");
+            }
         }
 
         public DataGridView getGrid()
@@ -784,50 +853,103 @@ namespace gShopEditor
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            textBox1.Text = gshop.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].item_id.ToString();
-            textBox2.Text = getDecoding(gshop.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].name, "Unicode");
-            textBox3.Text = gshop.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].item_count.ToString();
-            textBox4.Text = getDecoding(gshop.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].icon, "GBK");
-            textBox5.Text = gshop.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].sell_options[0].price.ToString();
-            textBox6.Text = getConvertTimestampToString(gshop.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].sell_options[0].until_time);
-            textBox7.Text = getConvertSecondsToString(gshop.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].sell_options[0].time);
-            richTextBox1.Text = getDecoding(gshop.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].desc, "Unicode");
-            switch (gshop.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].props)
+            if (radioButton6.Checked)
             {
-                case 0:
-                    {
-                        radioButton1.Checked = true;
-                        break;
-                    }
-                case 1:
-                    {
-                        radioButton2.Checked = true;
-                        break;
-                    }
-                case 2:
-                    {
-                        radioButton3.Checked = true;
-                        break;
-                    }
-                case 3:
-                    {
-                        radioButton4.Checked = true;
-                        break;
-                    }
-                case 4:
-                    {
-                        radioButton5.Checked = true;
-                        break;
-                    }
+                textBox1.Text = gshop_126.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].item_id.ToString();
+                textBox2.Text = getDecoding(gshop_126.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].name, "Unicode");
+                textBox3.Text = gshop_126.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].item_count.ToString();
+                textBox4.Text = getDecoding(gshop_126.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].icon, "GBK");
+                textBox5.Text = gshop_126.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].sell_options[0].price.ToString();
+                textBox6.Text = getConvertTimestampToString(gshop_126.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].sell_options[0].until_time);
+                textBox7.Text = getConvertSecondsToString(gshop_126.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].sell_options[0].time);
+                richTextBox1.Text = getDecoding(gshop_126.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].desc, "Unicode");
+                switch (gshop_126.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].props)
+                {
+                    case 0:
+                        {
+                            radioButton1.Checked = true;
+                            break;
+                        }
+                    case 1:
+                        {
+                            radioButton2.Checked = true;
+                            break;
+                        }
+                    case 2:
+                        {
+                            radioButton3.Checked = true;
+                            break;
+                        }
+                    case 3:
+                        {
+                            radioButton4.Checked = true;
+                            break;
+                        }
+                    case 4:
+                        {
+                            radioButton5.Checked = true;
+                            break;
+                        }
+                }
+            }
+            else if (radioButton7.Checked)
+            {
+                textBox1.Text = gshop_14x_client.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].item_id.ToString();
+                textBox2.Text = getDecoding(gshop_14x_client.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].name, "Unicode");
+                textBox3.Text = gshop_14x_client.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].item_count.ToString();
+                textBox4.Text = getDecoding(gshop_14x_client.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].icon, "GBK");
+                textBox5.Text = gshop_14x_client.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].sell_options[0].price.ToString();
+                textBox6.Text = getConvertTimestampToString((int)gshop_14x_client.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].sell_options[0].end_time);
+                textBox7.Text = getConvertSecondsToString((int)gshop_14x_client.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].sell_options[0].start_time);
+                richTextBox1.Text = getDecoding(gshop_14x_client.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].desc, "Unicode");
+                switch (gshop_14x_client.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].props)
+                {
+                    case 0:
+                        {
+                            radioButton1.Checked = true;
+                            break;
+                        }
+                    case 1:
+                        {
+                            radioButton2.Checked = true;
+                            break;
+                        }
+                    case 2:
+                        {
+                            radioButton3.Checked = true;
+                            break;
+                        }
+                    case 3:
+                        {
+                            radioButton4.Checked = true;
+                            break;
+                        }
+                    case 4:
+                        {
+                            radioButton5.Checked = true;
+                            break;
+                        }
+                }
             }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < gshop.item_count; i++)
+            if (radioButton6.Checked)
             {
-                if (gshop.items[i].main_type == listBox1.SelectedIndex && gshop.items[i].sub_type == listBox2.SelectedIndex)
-                    gshop.items[i].sell_options[0].price = Int32.Parse(textBox9.Text) * 100;
+                for (int i = 0; i < gshop_126.item_count; i++)
+                {
+                    if (gshop_126.items[i].main_type == listBox1.SelectedIndex && gshop_126.items[i].sub_type == listBox2.SelectedIndex)
+                        gshop_126.items[i].sell_options[0].price = Int32.Parse(textBox9.Text) * 100;
+                }
+            }
+            else if(radioButton7.Checked)
+            {
+                for (int i = 0; i < gshop_14x_client.item_count; i++)
+                {
+                    if (gshop_14x_client.items[i].main_type == listBox1.SelectedIndex && gshop_14x_client.items[i].sub_type == listBox2.SelectedIndex)
+                        gshop_14x_client.items[i].sell_options[0].price = UInt32.Parse(textBox9.Text) * 100;
+                }
             }
         }
 
@@ -843,38 +965,86 @@ namespace gShopEditor
             {
                 using (BinaryWriter write = new BinaryWriter(new FileStream(save.FileName, FileMode.Create, FileAccess.Write), Encoding.Unicode))
                 {
-                    write.Write(gshop.timestamp);
-                    write.Write(gshop.item_count);
-                    for (int i = 0; i < gshop.item_count; i++)
+                    if (radioButton6.Checked)
                     {
-                        write.Write(gshop.items[i].local_id);
-                        write.Write(gshop.items[i].main_type);
-                        write.Write(gshop.items[i].sub_type);
-                        write.Write(gshop.items[i].icon);
-                        getWriteNull(write, gshop.items[i].icon.Length, 128);
-                        write.Write(gshop.items[i].item_id);
-                        write.Write(gshop.items[i].item_count);
-                        for (int j = 0; j < 4; j++)
+                        write.Write(gshop_126.timestamp);
+                        write.Write(gshop_126.item_count);
+                        for (int i = 0; i < gshop_126.item_count; i++)
                         {
-                            write.Write(gshop.items[i].sell_options[j].price);
-                            write.Write(gshop.items[i].sell_options[j].until_time);
-                            write.Write(gshop.items[i].sell_options[j].time);
+                            write.Write(gshop_126.items[i].local_id);
+                            write.Write(gshop_126.items[i].main_type);
+                            write.Write(gshop_126.items[i].sub_type);
+                            write.Write(gshop_126.items[i].icon);
+                            getWriteNull(write, gshop_126.items[i].icon.Length, 128);
+                            write.Write(gshop_126.items[i].item_id);
+                            write.Write(gshop_126.items[i].item_count);
+                            for (int j = 0; j < 4; j++)
+                            {
+                                write.Write(gshop_126.items[i].sell_options[j].price);
+                                write.Write(gshop_126.items[i].sell_options[j].until_time);
+                                write.Write(gshop_126.items[i].sell_options[j].time);
+                            }
+                            write.Write(gshop_126.items[i].props);
+                            write.Write(gshop_126.items[i].desc);
+                            getWriteNull(write, gshop_126.items[i].desc.Length, 1024);
+                            write.Write(gshop_126.items[i].name);
+                            getWriteNull(write, gshop_126.items[i].name.Length, 64);
                         }
-                        write.Write(gshop.items[i].props);
-                        write.Write(gshop.items[i].desc);
-                        getWriteNull(write, gshop.items[i].desc.Length, 1024);
-                        write.Write(gshop.items[i].name);
-                        getWriteNull(write, gshop.items[i].name.Length, 64);
-                    }
-                    for (int i = 0; i < 8; i++)
-                    {
-                        write.Write(gshop.cats[i].cat_name);
-                        getWriteNull(write, gshop.cats[i].cat_name.Length, 128);
-                        write.Write(gshop.cats[i].sub_cat_count);
-                        for (int j = 0; j < gshop.cats[i].sub_cat_count; j++)
+                        for (int i = 0; i < 8; i++)
                         {
-                            write.Write(gshop.cats[i].sub_cat_name[j]);
-                            getWriteNull(write, gshop.cats[i].sub_cat_name[j].Length, 128);
+                            write.Write(gshop_126.cats[i].cat_name);
+                            getWriteNull(write, gshop_126.cats[i].cat_name.Length, 128);
+                            write.Write(gshop_126.cats[i].sub_cat_count);
+                            for (int j = 0; j < gshop_126.cats[i].sub_cat_count; j++)
+                            {
+                                write.Write(gshop_126.cats[i].sub_cat_name[j]);
+                                getWriteNull(write, gshop_126.cats[i].sub_cat_name[j].Length, 128);
+                            }
+                        }
+                    }
+                    else if (radioButton7.Checked)
+                    {
+                        write.Write(gshop_14x_client.timestamp);
+                        write.Write(gshop_14x_client.item_count);
+                        for (int i = 0; i < gshop_14x_client.item_count; i++)
+                        {
+                            write.Write(gshop_14x_client.items[i].local_id);
+                            write.Write(gshop_14x_client.items[i].main_type);
+                            write.Write(gshop_14x_client.items[i].sub_type);
+                            write.Write(gshop_14x_client.items[i].icon);
+                            getWriteNull(write, gshop_14x_client.items[i].icon.Length, 128);
+                            write.Write(gshop_14x_client.items[i].item_id);
+                            write.Write(gshop_14x_client.items[i].item_count);
+                            for (int j = 0; j < 4; j++)
+                            {
+                                write.Write(gshop_14x_client.items[i].sell_options[j].price);
+                                write.Write(gshop_14x_client.items[i].sell_options[j].end_time);
+                                write.Write(gshop_14x_client.items[i].sell_options[j].time);
+                                write.Write(gshop_14x_client.items[i].sell_options[j].start_time);
+                                write.Write(gshop_14x_client.items[i].sell_options[j].type);
+                                write.Write(gshop_14x_client.items[i].sell_options[j].day);
+                                write.Write(gshop_14x_client.items[i].sell_options[j].status);
+                                write.Write(gshop_14x_client.items[i].sell_options[j].flag);
+                            }
+                            write.Write(gshop_14x_client.items[i].desc);
+                            getWriteNull(write, gshop_14x_client.items[i].desc.Length, 1024);
+                            write.Write(gshop_14x_client.items[i].name);
+                            getWriteNull(write, gshop_14x_client.items[i].name.Length, 64);
+                            write.Write(gshop_14x_client.items[i].idGift);
+                            write.Write(gshop_14x_client.items[i].iGiftNum);
+                            write.Write(gshop_14x_client.items[i].iGiftTime);
+                            write.Write(gshop_14x_client.items[i].iLogPrice);
+                        }
+                        for (int i = 0; i < 8; i++)
+                        {
+                            write.Write(gshop_14x_client.cats[i].cat_name);
+                            getWriteNull(write, gshop_14x_client.cats[i].cat_name.Length, 128);
+                            write.Write(gshop_14x_client.cats[i].sub_cat_count);
+                            for (int j = 0; j < gshop_14x_client.cats[i].sub_cat_count; j++)
+                            {
+                                write.Write(gshop_14x_client.cats[i].sub_cat_name[j]);
+                                getWriteNull(write, gshop_14x_client.cats[i].sub_cat_name[j].Length, 128);
+                            }
                         }
                     }
                     write.Close();
@@ -894,7 +1064,12 @@ namespace gShopEditor
             for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
             {
                 if (dataGridView1.Rows[i].Selected)
-                    gshop.items[Convert.ToInt32(dataGridView1[1, i].Value)].sell_options[0].price = Int32.Parse(textBox10.Text) * 100;
+                {
+                    if (radioButton6.Checked)
+                        gshop_126.items[Convert.ToInt32(dataGridView1[1, i].Value)].sell_options[0].price = Int32.Parse(textBox10.Text) * 100;
+                    else if (radioButton7.Checked)
+                        gshop_14x_client.items[Convert.ToInt32(dataGridView1[1, i].Value)].sell_options[0].price = UInt32.Parse(textBox10.Text) * 100;
+                }
             }
         }
 
@@ -926,7 +1101,12 @@ namespace gShopEditor
         {
             using (BinaryReader read = new BinaryReader(new FileStream(textBox11.Text, FileMode.Open, FileAccess.Read), Encoding.Unicode))
             {
-                gShopRead(read, gshop);
+                if (radioButton6.Checked)
+                    gShop126Read(read, gshop_126);
+                else if (radioButton7.Checked)
+                    gShop14xRead(read, gshop_14x_client);
+                else
+                    MessageBox.Show("Не выбрана версия для загрузки.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 read.Close();
             }
             using (BinaryReader read = new BinaryReader(new FileStream(textBox12.Text, FileMode.Open, FileAccess.Read), Encoding.Unicode))
@@ -943,65 +1123,128 @@ namespace gShopEditor
             else
             {
                 listBox1.Items.Add("New");
-                gshop.cats.Add(new Category());
+                if (radioButton6.Checked)
+                    gshop_126.cats.Add(new Category());
+                else if (radioButton7.Checked)
+                    gshop_14x_client.cats.Add(new Category());
             }
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
             listBox1.Items.RemoveAt(listBox1.SelectedIndex);
-            gshop.cats.RemoveAt(listBox1.SelectedIndex);
+            if (radioButton6.Checked)
+                gshop_126.cats.RemoveAt(listBox1.SelectedIndex);
+            else if (radioButton7.Checked)
+                gshop_14x_client.cats.RemoveAt(listBox1.SelectedIndex);
         }
 
         private void button10_Click(object sender, EventArgs e)
         {
-            listBox1.Items[listBox1.SelectedIndex] = textBox13.Text + " (" + gshop.cats[listBox1.SelectedIndex].sub_cat_count + ")";
+            if (radioButton6.Checked)
+                listBox1.Items[listBox1.SelectedIndex] = textBox13.Text + " (" + gshop_126.cats[listBox1.SelectedIndex].sub_cat_count + ")";
+            else if (radioButton7.Checked)
+                listBox1.Items[listBox1.SelectedIndex] = textBox13.Text + " (" + gshop_14x_client.cats[listBox1.SelectedIndex].sub_cat_count + ")";
         }
 
         private void button11_Click(object sender, EventArgs e)
         {
-            int count = 0; ;
-            for (int i = 0; i < gshop.item_count; i++)
-                if (gshop.items[i].main_type == listBox1.SelectedIndex && gshop.items[i].sub_type == listBox2.SelectedIndex)
-                    count++;
+            int count = 0;
+            if (radioButton6.Checked)
+            {
+                for (int i = 0; i < gshop_126.item_count; i++)
+                    if (gshop_126.items[i].main_type == listBox1.SelectedIndex && gshop_126.items[i].sub_type == listBox2.SelectedIndex)
+                        count++;
+            }
+            else if (radioButton7.Checked)
+            {
+                for (int i = 0; i < gshop_14x_client.item_count; i++)
+                    if (gshop_14x_client.items[i].main_type == listBox1.SelectedIndex && gshop_14x_client.items[i].sub_type == listBox2.SelectedIndex)
+                        count++;
+            }
             listBox2.Items[listBox2.SelectedIndex] = textBox14.Text + " (" + count + ")";
         }
 
         private void button9_Click(object sender, EventArgs e)
         {
-            if (gshop.cats[listBox1.SelectedIndex].sub_cat_count >= 8)
-                MessageBox.Show("Невозможно добавить подкатегорию.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            else
+            if (radioButton6.Checked)
             {
-                listBox2.Items.Add("New");
-                gshop.cats[listBox1.SelectedIndex].sub_cat_count++;
-                gshop.cats[listBox1.SelectedIndex].sub_cat_name[gshop.cats[listBox1.SelectedIndex].sub_cat_count - 1] = getEncoding("New", "Unicode");
+                if (gshop_126.cats[listBox1.SelectedIndex].sub_cat_count >= 8)
+                    MessageBox.Show("Невозможно добавить подкатегорию.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                else
+                {
+                    listBox2.Items.Add("New");
+                    gshop_126.cats[listBox1.SelectedIndex].sub_cat_count++;
+                    gshop_126.cats[listBox1.SelectedIndex].sub_cat_name[gshop_126.cats[listBox1.SelectedIndex].sub_cat_count - 1] = getEncoding("New", "Unicode");
+                }
+            }
+            else if (radioButton7.Checked)
+            {
+                if (gshop_14x_client.cats[listBox1.SelectedIndex].sub_cat_count >= 8)
+                    MessageBox.Show("Невозможно добавить подкатегорию.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                else
+                {
+                    listBox2.Items.Add("New");
+                    gshop_14x_client.cats[listBox1.SelectedIndex].sub_cat_count++;
+                    gshop_14x_client.cats[listBox1.SelectedIndex].sub_cat_name[gshop_14x_client.cats[listBox1.SelectedIndex].sub_cat_count - 1] = getEncoding("New", "Unicode");
+                }
             }
         }
 
         private void button12_Click(object sender, EventArgs e)
         {
-            int max_id = gshop.item_count;
-            gshop.items.Add(new Items());
-            gshop.items[max_id].local_id = max_id;
-            gshop.items[max_id].main_type = listBox1.SelectedIndex;
-            gshop.items[max_id].sub_type = listBox2.SelectedIndex;
-            gshop.items[max_id].icon = new byte[128];
-            gshop.items[max_id].item_id = 0;
-            gshop.items[max_id].item_count = 0;
-            gshop.items[max_id].sell_options = new List<Sell_options>(4);
-            for (int j = 0; j < 4; j++)
+            if (radioButton6.Checked)
             {
-                gshop.items[max_id].sell_options.Add(new Sell_options());
-                gshop.items[max_id].sell_options[j].price = 0;
-                gshop.items[max_id].sell_options[j].until_time = 0;
-                gshop.items[max_id].sell_options[j].time = 0;
+                int max_id = gshop_126.item_count;
+                gshop_126.items.Add(new Items());
+                gshop_126.items[max_id].local_id = max_id;
+                gshop_126.items[max_id].main_type = listBox1.SelectedIndex;
+                gshop_126.items[max_id].sub_type = listBox2.SelectedIndex;
+                gshop_126.items[max_id].icon = new byte[128];
+                gshop_126.items[max_id].item_id = 0;
+                gshop_126.items[max_id].item_count = 0;
+                gshop_126.items[max_id].sell_options = new List<Sell_options>(4);
+                for (int j = 0; j < 4; j++)
+                {
+                    gshop_126.items[max_id].sell_options.Add(new Sell_options());
+                    gshop_126.items[max_id].sell_options[j].price = 0;
+                    gshop_126.items[max_id].sell_options[j].until_time = 0;
+                    gshop_126.items[max_id].sell_options[j].time = 0;
+                }
+                gshop_126.items[max_id].props = 1;
+                gshop_126.items[max_id].desc = new byte[1024];
+                gshop_126.items[max_id].name = getEncoding("New", "Unicode");
+                gshop_126.item_count++;
+                dataGridView1.Rows.Add(dataGridView1.Rows.Count, gshop_126.items[max_id].local_id, getDecoding(gshop_126.items[max_id].name, "Unicode"));
             }
-            gshop.items[max_id].props = 1;
-            gshop.items[max_id].desc = new byte[1024];
-            gshop.items[max_id].name = getEncoding("New", "Unicode");
-            gshop.item_count++;
-            dataGridView1.Rows.Add(dataGridView1.Rows.Count, gshop.items[max_id].local_id, getDecoding(gshop.items[max_id].name, "Unicode"));
+            else if (radioButton7.Checked)
+            {
+                int max_id = gshop_126.item_count;
+                gshop_14x_client.items.Add(new Items_1());
+                gshop_14x_client.items[max_id].local_id = max_id;
+                gshop_14x_client.items[max_id].main_type = listBox1.SelectedIndex;
+                gshop_14x_client.items[max_id].sub_type = listBox2.SelectedIndex;
+                gshop_14x_client.items[max_id].icon = new byte[128];
+                gshop_14x_client.items[max_id].item_id = 0;
+                gshop_14x_client.items[max_id].item_count = 0;
+                gshop_14x_client.items[max_id].sell_options = new List<Sell_options_1>(4);
+                for (int j = 0; j < 4; j++)
+                {
+                    gshop_14x_client.items[max_id].sell_options.Add(new Sell_options_1());
+                    gshop_14x_client.items[max_id].sell_options[j].price = 0;
+                    gshop_14x_client.items[max_id].sell_options[j].end_time = 0;
+                    gshop_14x_client.items[max_id].sell_options[j].time = 0;
+                    gshop_14x_client.items[max_id].sell_options[j].start_time = 0;
+                    gshop_14x_client.items[max_id].sell_options[j].type = 0;
+                    gshop_14x_client.items[max_id].sell_options[j].day = 0;
+                    gshop_14x_client.items[max_id].sell_options[j].status = 1;
+                    gshop_14x_client.items[max_id].sell_options[j].flag = 0;
+                }
+                gshop_14x_client.items[max_id].desc = new byte[1024];
+                gshop_14x_client.items[max_id].name = getEncoding("New", "Unicode");
+                gshop_14x_client.item_count++;
+                dataGridView1.Rows.Add(dataGridView1.Rows.Count, gshop_14x_client.items[max_id].local_id, getDecoding(gshop_14x_client.items[max_id].name, "Unicode"));
+            }
         }
 
         private void button13_Click(object sender, EventArgs e)
@@ -1009,16 +1252,33 @@ namespace gShopEditor
             int index = Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value);
             int pos = dataGridView1.CurrentRow.Index;
             dataGridView1.Rows.RemoveAt(dataGridView1.CurrentRow.Index);
-            gshop.items.RemoveAt(index);
-            gshop.item_count--;
-            for (int i = index; i < gshop.item_count; i++)
-                gshop.items[i].local_id--;
-            for (int i = pos; i < dataGridView1.Rows.Count - 1; i++)
+            if (radioButton6.Checked)
             {
-                int number = Convert.ToInt32(dataGridView1[0, i].Value);
-                int value = Convert.ToInt32(dataGridView1[1, i].Value);
-                dataGridView1[0, i].Value = number - 1;
-                dataGridView1[1, i].Value = value - 1;
+                gshop_126.items.RemoveAt(index);
+                gshop_126.item_count--;
+                for (int i = index; i < gshop_126.item_count; i++)
+                    gshop_126.items[i].local_id--;
+                for (int i = pos; i < dataGridView1.Rows.Count - 1; i++)
+                {
+                    int number = Convert.ToInt32(dataGridView1[0, i].Value);
+                    int value = Convert.ToInt32(dataGridView1[1, i].Value);
+                    dataGridView1[0, i].Value = number - 1;
+                    dataGridView1[1, i].Value = value - 1;
+                }
+            }
+            else if (radioButton7.Checked)
+            {
+                gshop_14x_client.items.RemoveAt(index);
+                gshop_14x_client.item_count--;
+                for (int i = index; i < gshop_14x_client.item_count; i++)
+                    gshop_14x_client.items[i].local_id--;
+                for (int i = pos; i < dataGridView1.Rows.Count - 1; i++)
+                {
+                    int number = Convert.ToInt32(dataGridView1[0, i].Value);
+                    int value = Convert.ToInt32(dataGridView1[1, i].Value);
+                    dataGridView1[0, i].Value = number - 1;
+                    dataGridView1[1, i].Value = value - 1;
+                }
             }
         }
 
@@ -1029,76 +1289,122 @@ namespace gShopEditor
                 Form2 frm = new Form2();
                 frm.cat_index = listBox1.SelectedIndex;
                 frm.sub_cat_index = listBox2.SelectedIndex;
-                frm.shop = gshop;
+                frm.type = radioButton6.Checked ? 1 : 2;
+                if (radioButton6.Checked)
+                    frm.shop_126 = gshop_126;
+                else if (radioButton7.Checked)
+                    frm.shop_14x_client = gshop_14x_client;
                 frm.elem = element;
                 frm.ShowDialog();
-                dataGridView1.Update();
             }
         }
 
         private void textBox1_Leave(object sender, EventArgs e)
         {
-            gshop.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].item_id = UInt32.Parse(textBox1.Text);
+            if (radioButton6.Checked)
+                gshop_126.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].item_id = UInt32.Parse(textBox1.Text);
+            else if (radioButton7.Checked)
+                gshop_14x_client.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].item_id = UInt32.Parse(textBox1.Text);
         }
 
         private void textBox3_Leave(object sender, EventArgs e)
         {
-            gshop.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].item_count = UInt32.Parse(textBox3.Text);
+            if (radioButton6.Checked)
+                gshop_126.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].item_count = UInt32.Parse(textBox3.Text);
+            else if (radioButton7.Checked)
+                gshop_14x_client.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].item_count = UInt32.Parse(textBox3.Text);
         }
 
         private void textBox2_Leave(object sender, EventArgs e)
         {
-            gshop.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].name = getEncoding(textBox2.Text, "Unicode");
+            if (radioButton6.Checked)
+                gshop_126.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].item_count = UInt32.Parse(textBox3.Text);
+            else if (radioButton7.Checked)
+                gshop_14x_client.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].item_count = UInt32.Parse(textBox3.Text);
         }
 
         private void richTextBox1_Leave(object sender, EventArgs e)
         {
-            gshop.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].desc = getEncoding(richTextBox1.Text, "Unicode");
+            if (radioButton6.Checked)
+                gshop_126.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].desc = getEncoding(richTextBox1.Text, "Unicode");
+            else if (radioButton7.Checked)
+                gshop_14x_client.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].desc = getEncoding(richTextBox1.Text, "Unicode");
         }
 
         private void textBox4_Leave(object sender, EventArgs e)
         {
-            gshop.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].icon = getEncoding(textBox4.Text, "GBK");
+            if (radioButton6.Checked)
+                gshop_126.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].icon = getEncoding(textBox4.Text, "GBK");
+            else if (radioButton7.Checked)
+                gshop_14x_client.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].icon = getEncoding(textBox4.Text, "GBK");
         }
 
         private void textBox5_Leave(object sender, EventArgs e)
         {
-            gshop.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].sell_options[0].price = Int32.Parse(textBox5.Text);
+            if (radioButton6.Checked)
+                gshop_126.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].sell_options[0].price = Int32.Parse(textBox5.Text);
+            else if (radioButton7.Checked)
+                gshop_14x_client.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].sell_options[0].price = UInt32.Parse(textBox5.Text);
         }
 
         private void textBox6_Leave(object sender, EventArgs e)
         {
-            gshop.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].sell_options[0].time = getConvertStringToTimestamp(textBox6.Text);
+            if (radioButton6.Checked)
+                gshop_126.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].sell_options[0].time = getConvertStringToTimestamp(textBox6.Text);
+            else if (radioButton7.Checked)
+                gshop_14x_client.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].sell_options[0].time = (uint)getConvertStringToTimestamp(textBox6.Text);
         }
 
         private void textBox7_Leave(object sender, EventArgs e)
         {
-            gshop.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].sell_options[0].until_time = getConvertStringToSeconds(textBox7.Text);
+            if (radioButton6.Checked)
+            gshop_126.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].sell_options[0].until_time = getConvertStringToSeconds(textBox7.Text);
+            else if (radioButton7.Checked)
+                gshop_14x_client.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].sell_options[0].end_time = (uint)getConvertStringToSeconds(textBox7.Text);
+
         }
 
         private void radioButton1_Click(object sender, EventArgs e)
         {
-            gshop.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].props = 0;
+            if (radioButton6.Checked)
+                gshop_126.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].props = 0;
+            else if (radioButton7.Checked)
+                gshop_14x_client.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].sell_options[0].status = 0;
         }
 
         private void radioButton2_Click(object sender, EventArgs e)
         {
-            gshop.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].props = 1;
+            if (radioButton6.Checked)
+            gshop_126.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].props = 1;
+            else if (radioButton7.Checked)
+                gshop_14x_client.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].sell_options[0].status = 1;
         }
 
         private void radioButton3_Click(object sender, EventArgs e)
         {
-            gshop.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].props = 2;
+            //2
+            if (radioButton6.Checked)
+                gshop_126.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].props = 2;
+            else if (radioButton7.Checked)
+                gshop_14x_client.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].sell_options[0].status = 2;
         }
 
         private void radioButton4_Click(object sender, EventArgs e)
         {
-            gshop.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].props = 3;
+            //3
+            if (radioButton6.Checked)
+                gshop_126.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].props = 3;
+            else if (radioButton7.Checked)
+                gshop_14x_client.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].sell_options[0].status = 3;
         }
 
         private void radioButton5_Click(object sender, EventArgs e)
         {
-            gshop.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].props = 4;
+            //4
+            if (radioButton6.Checked)
+                gshop_126.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].props = 4;
+            else if (radioButton7.Checked)
+                gshop_14x_client.items[Convert.ToInt32(dataGridView1[1, dataGridView1.CurrentRow.Index].Value)].sell_options[0].status = 4;
         }
 
         private void сохранитьВ14хToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1111,78 +1417,82 @@ namespace gShopEditor
             };
             if (save.ShowDialog() != DialogResult.Cancel)
             {
-                gshop14x_client.timestamp = gshop.timestamp;
-                gshop14x_client.item_count = gshop.item_count;
-                gshop14x_client.items = new List<Items_1>(gshop14x_client.item_count);
-                for (int i = 0; i < gshop.item_count; i++)
+                gshop_14x_client.timestamp = gshop_126.timestamp;
+                gshop_14x_client.item_count = gshop_126.item_count;
+                gshop_14x_client.items = new List<Items_1>(gshop_14x_client.item_count);
+                for (int i = 0; i < gshop_126.item_count; i++)
                 {
-                    gshop14x_client.items.Add(new Items_1());
-                    gshop14x_client.items[i].local_id = i + 1;
-                    gshop14x_client.items[i].main_type = gshop.items[i].main_type;
-                    gshop14x_client.items[i].sub_type = gshop.items[i].sub_type;
-                    gshop14x_client.items[i].icon = gshop.items[i].icon;
-                    gshop14x_client.items[i].item_id = gshop.items[i].item_id;
-                    gshop14x_client.items[i].item_count = gshop.items[i].item_count;
-                    gshop14x_client.items[i].sell_options = new List<Sell_options_1>(4);
+                    gshop_14x_client.items.Add(new Items_1());
+                    gshop_14x_client.items[i].local_id = i + 1;
+                    gshop_14x_client.items[i].main_type = gshop_126.items[i].main_type;
+                    gshop_14x_client.items[i].sub_type = gshop_126.items[i].sub_type;
+                    gshop_14x_client.items[i].icon = gshop_126.items[i].icon;
+                    gshop_14x_client.items[i].item_id = gshop_126.items[i].item_id;
+                    gshop_14x_client.items[i].item_count = gshop_126.items[i].item_count;
+                    gshop_14x_client.items[i].sell_options = new List<Sell_options_1>(4);
                     for (int j = 0; j < 4; j++)
                     {
-                        gshop14x_client.items[i].sell_options.Add(new Sell_options_1());
-                        gshop14x_client.items[i].sell_options[j].price = (uint)gshop.items[i].sell_options[j].price;
-                        gshop14x_client.items[i].sell_options[j].end_time = 0;
-                        gshop14x_client.items[i].sell_options[j].time = (uint)gshop.items[i].sell_options[j].until_time;
-                        gshop14x_client.items[i].sell_options[j].start_time = 0;
-                        gshop14x_client.items[i].sell_options[j].type = -1;
-                        gshop14x_client.items[i].sell_options[j].day = 0;
-                        gshop14x_client.items[i].sell_options[j].status = 0;
-                        gshop14x_client.items[i].sell_options[j].flag = 0;
+                        gshop_14x_client.items[i].sell_options.Add(new Sell_options_1());
+                        gshop_14x_client.items[i].sell_options[j].price = (uint)gshop_126.items[i].sell_options[j].price;
+                        gshop_14x_client.items[i].sell_options[j].end_time = 0;
+                        gshop_14x_client.items[i].sell_options[j].time = (uint)gshop_126.items[i].sell_options[j].until_time;
+                        gshop_14x_client.items[i].sell_options[j].start_time = 0;
+                        gshop_14x_client.items[i].sell_options[j].type = -1;
+                        gshop_14x_client.items[i].sell_options[j].day = 0;
+                        gshop_14x_client.items[i].sell_options[j].status = 0;
+                        gshop_14x_client.items[i].sell_options[j].flag = 0;
                     }
-                    gshop14x_client.items[i].desc = gshop.items[i].desc;
-                    gshop14x_client.items[i].name = gshop.items[i].name;
+                    gshop_14x_client.items[i].desc = gshop_126.items[i].desc;
+                    gshop_14x_client.items[i].name = gshop_126.items[i].name;
+                    gshop_14x_client.items[i].idGift = 0;
+                    gshop_14x_client.items[i].iGiftNum = 0;
+                    gshop_14x_client.items[i].iGiftTime = 0;
+                    gshop_14x_client.items[i].iLogPrice = 0;
                 }
-                gshop14x_client.cats = gshop.cats;
+                gshop_14x_client.cats = gshop_126.cats;
                     
                 using (BinaryWriter write = new BinaryWriter(new FileStream(save.FileName, FileMode.Create, FileAccess.Write), Encoding.Unicode))
                 {
-                    write.Write(gshop14x_client.timestamp);
-                    write.Write(gshop14x_client.item_count);
-                    for (int i = 0; i < gshop14x_client.item_count; i++)
+                    write.Write(gshop_14x_client.timestamp);
+                    write.Write(gshop_14x_client.item_count);
+                    for (int i = 0; i < gshop_14x_client.item_count; i++)
                     {
-                        write.Write(gshop14x_client.items[i].local_id);
-                        write.Write(gshop14x_client.items[i].main_type);
-                        write.Write(gshop14x_client.items[i].sub_type);
-                        write.Write(gshop14x_client.items[i].icon);
-                        getWriteNull(write, gshop14x_client.items[i].icon.Length, 128);
-                        write.Write(gshop14x_client.items[i].item_id);
-                        write.Write(gshop14x_client.items[i].item_count);
+                        write.Write(gshop_14x_client.items[i].local_id);
+                        write.Write(gshop_14x_client.items[i].main_type);
+                        write.Write(gshop_14x_client.items[i].sub_type);
+                        write.Write(gshop_14x_client.items[i].icon);
+                        getWriteNull(write, gshop_14x_client.items[i].icon.Length, 128);
+                        write.Write(gshop_14x_client.items[i].item_id);
+                        write.Write(gshop_14x_client.items[i].item_count);
                         for (int j = 0; j < 4; j++)
                         {
-                            write.Write(gshop14x_client.items[i].sell_options[j].price);
-                            write.Write(gshop14x_client.items[i].sell_options[j].end_time);
-                            write.Write(gshop14x_client.items[i].sell_options[j].time);
-                            write.Write(gshop14x_client.items[i].sell_options[j].start_time);
-                            write.Write(gshop14x_client.items[i].sell_options[j].type);
-                            write.Write(gshop14x_client.items[i].sell_options[j].day);
-                            write.Write(gshop14x_client.items[i].sell_options[j].status);
-                            write.Write(gshop14x_client.items[i].sell_options[j].flag);
+                            write.Write(gshop_14x_client.items[i].sell_options[j].price);
+                            write.Write(gshop_14x_client.items[i].sell_options[j].end_time);
+                            write.Write(gshop_14x_client.items[i].sell_options[j].time);
+                            write.Write(gshop_14x_client.items[i].sell_options[j].start_time);
+                            write.Write(gshop_14x_client.items[i].sell_options[j].type);
+                            write.Write(gshop_14x_client.items[i].sell_options[j].day);
+                            write.Write(gshop_14x_client.items[i].sell_options[j].status);
+                            write.Write(gshop_14x_client.items[i].sell_options[j].flag);
                         }
-                        write.Write(gshop14x_client.items[i].desc);
-                        getWriteNull(write, gshop14x_client.items[i].desc.Length, 1024);
-                        write.Write(gshop14x_client.items[i].name);
-                        getWriteNull(write, gshop14x_client.items[i].name.Length, 64);
-                        write.Write(gshop14x_client.items[i].idGift);
-                        write.Write(gshop14x_client.items[i].iGiftNum);
-                        write.Write(gshop14x_client.items[i].iGiftTime);
-                        write.Write(gshop14x_client.items[i].iLogPrice);
+                        write.Write(gshop_14x_client.items[i].desc);
+                        getWriteNull(write, gshop_14x_client.items[i].desc.Length, 1024);
+                        write.Write(gshop_14x_client.items[i].name);
+                        getWriteNull(write, gshop_14x_client.items[i].name.Length, 64);
+                        write.Write(gshop_14x_client.items[i].idGift);
+                        write.Write(gshop_14x_client.items[i].iGiftNum);
+                        write.Write(gshop_14x_client.items[i].iGiftTime);
+                        write.Write(gshop_14x_client.items[i].iLogPrice);
                     }
                     for (int i = 0; i < 8; i++)
                     {
-                        write.Write(gshop14x_client.cats[i].cat_name);
-                        getWriteNull(write, gshop14x_client.cats[i].cat_name.Length, 128);
-                        write.Write(gshop14x_client.cats[i].sub_cat_count);
-                        for (int j = 0; j < gshop14x_client.cats[i].sub_cat_count; j++)
+                        write.Write(gshop_14x_client.cats[i].cat_name);
+                        getWriteNull(write, gshop_14x_client.cats[i].cat_name.Length, 128);
+                        write.Write(gshop_14x_client.cats[i].sub_cat_count);
+                        for (int j = 0; j < gshop_14x_client.cats[i].sub_cat_count; j++)
                         {
-                            write.Write(gshop14x_client.cats[i].sub_cat_name[j]);
-                            getWriteNull(write, gshop14x_client.cats[i].sub_cat_name[j].Length, 128);
+                            write.Write(gshop_14x_client.cats[i].sub_cat_name[j]);
+                            getWriteNull(write, gshop_14x_client.cats[i].sub_cat_name[j].Length, 128);
                         }
                     }
                     write.Close();
@@ -1200,30 +1510,34 @@ namespace gShopEditor
             };
             if (save.ShowDialog() != DialogResult.Cancel)
             {
-                gshop14x_server.timestamp = gshop.timestamp;
-                gshop14x_server.item_count = gshop.item_count;
+                gshop14x_server.timestamp = gshop_126.timestamp;
+                gshop14x_server.item_count = gshop_126.item_count;
                 gshop14x_server.items = new List<Items_2>(gshop14x_server.item_count);
-                for (int i = 0; i < gshop.item_count; i++)
+                for (int i = 0; i < gshop_126.item_count; i++)
                 {
                     gshop14x_server.items.Add(new Items_2());
                     gshop14x_server.items[i].local_id = i + 1;
-                    gshop14x_server.items[i].main_type = gshop.items[i].main_type;
-                    gshop14x_server.items[i].sub_type = gshop.items[i].sub_type;
-                    gshop14x_server.items[i].item_id = gshop.items[i].item_id;
-                    gshop14x_server.items[i].item_count = gshop.items[i].item_count;
+                    gshop14x_server.items[i].main_type = gshop_126.items[i].main_type;
+                    gshop14x_server.items[i].sub_type = gshop_126.items[i].sub_type;
+                    gshop14x_server.items[i].item_id = gshop_126.items[i].item_id;
+                    gshop14x_server.items[i].item_count = gshop_126.items[i].item_count;
                     gshop14x_server.items[i].sell_options = new List<Sell_options_1>(4);
                     for (int j = 0; j < 4; j++)
                     {
                         gshop14x_server.items[i].sell_options.Add(new Sell_options_1());
-                        gshop14x_server.items[i].sell_options[j].price = (uint)gshop.items[i].sell_options[j].price;
+                        gshop14x_server.items[i].sell_options[j].price = (uint)gshop_126.items[i].sell_options[j].price;
                         gshop14x_server.items[i].sell_options[j].end_time = 0;
-                        gshop14x_server.items[i].sell_options[j].time = (uint)gshop.items[i].sell_options[j].until_time;
+                        gshop14x_server.items[i].sell_options[j].time = (uint)gshop_126.items[i].sell_options[j].until_time;
                         gshop14x_server.items[i].sell_options[j].start_time = 0;
                         gshop14x_server.items[i].sell_options[j].type = -1;
                         gshop14x_server.items[i].sell_options[j].day = 0;
                         gshop14x_server.items[i].sell_options[j].status = 0;
                         gshop14x_server.items[i].sell_options[j].flag = 0;
                     }
+                    gshop14x_server.items[i].idGift = 0;
+                    gshop14x_server.items[i].iGiftNum = 0;
+                    gshop14x_server.items[i].iGiftTime = 0;
+                    gshop14x_server.items[i].iLogPrice = 0;
                 }
 
                 using (BinaryWriter write = new BinaryWriter(new FileStream(save.FileName, FileMode.Create, FileAccess.Write), Encoding.Unicode))

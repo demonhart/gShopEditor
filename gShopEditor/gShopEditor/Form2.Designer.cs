@@ -470,6 +470,7 @@
             this.MaximizeBox = false;
             this.Name = "Form2";
             this.Text = "Добавление предметов из elements.data";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form2_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
