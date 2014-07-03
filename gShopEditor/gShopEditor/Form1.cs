@@ -284,39 +284,16 @@ namespace gShopEditor
             element.unk = read.ReadInt16();
             element.unk2 = read.ReadInt32();
             element.list1_count = read.ReadInt32();
-            element.list1 = new List<List1>(element.list1_count);
-            for (int i = 0; i < element.list1_count; i++)
-            {
-                element.list1.Add(new List1());
-                element.list1[i].id = read.ReadInt32();
-                element.list1[i].name = read.ReadBytes(64);
-                element.list1[i].bonus_count = read.ReadInt32();
-                element.list1[i].bonus1_id = read.ReadInt32();
-                element.list1[i].bonus2_id = read.ReadInt32();
-                element.list1[i].bonus3_id = read.ReadInt32();
-            }
+            getChangePos(read, element.list1_count, 84);
             element.list2_count = read.ReadInt32();
-            element.weapons_class = new List<List2>(element.list2_count);
-            for (int i = 0; i < element.list2_count; i++)
-            {
-                element.weapons_class.Add(new List2());
-                element.weapons_class[i].id = read.ReadInt32();
-                element.weapons_class[i].name = read.ReadBytes(64);
-            }
+            getChangePos(read, element.list2_count, 68);
             element.list3_count = read.ReadInt32();
-            element.weapons_sub_class = new List<List3>(element.list3_count);
-            for (int i = 0; i < element.list3_count; i++)
-            {
-                element.weapons_sub_class.Add(new List3());
-                element.weapons_sub_class[i].id = read.ReadInt32();
-                element.weapons_sub_class[i].name = read.ReadBytes(64);
-                read.BaseStream.Position += 288;
-            }
+            getChangePos(read, element.list3_count, 356);
             element.list4_count = read.ReadInt32();
-            element.weapons = new List<List4>(element.list4_count);
+            element.weapons = new List<ListToRead>(element.list4_count);
             for (int i = 0; i < element.list4_count; i++)
             {
-                element.weapons.Add(new List4());
+                element.weapons.Add(new ListToRead());
                 element.weapons[i].id = read.ReadInt32();
                 read.BaseStream.Position += 8;
                 element.weapons[i].name = read.ReadBytes(64);
@@ -328,27 +305,14 @@ namespace gShopEditor
                     read.BaseStream.Position += 828;
             }
             element.list5_count = read.ReadInt32();
-            element.armor_class = new List<List5>(element.list5_count);
-            for (int i = 0; i < element.list5_count; i++)
-            {
-                element.armor_class.Add(new List5());
-                element.armor_class[i].id = read.ReadInt32();
-                element.armor_class[i].name = read.ReadBytes(64);
-            }
+            getChangePos(read, element.list5_count, 68);
             element.list6_count = read.ReadInt32();
-            element.armor_sub_class = new List<List6>(element.list6_count);
-            for (int i = 0; i < element.list6_count; i++)
-            {
-                element.armor_sub_class.Add(new List6());
-                element.armor_sub_class[i].id = read.ReadInt32();
-                element.armor_sub_class[i].name = read.ReadBytes(64);
-                element.armor_sub_class[i].mask = read.ReadInt32();
-            }
+            getChangePos(read, element.list6_count, 72);
             element.list7_count = read.ReadInt32();
-            element.armor = new List<List7>(element.list7_count);
+            element.armor = new List<ListToRead>(element.list7_count);
             for (int i = 0; i < element.list7_count; i++)
             {
-                element.armor.Add(new List7());
+                element.armor.Add(new ListToRead());
                 element.armor[i].id = read.ReadInt32();
                 read.BaseStream.Position += 8;
                 element.armor[i].name = read.ReadBytes(64);
@@ -364,10 +328,10 @@ namespace gShopEditor
             element.list9_count = read.ReadInt32();
             getChangePos(read, element.list9_count, 72);
             element.list10_count = read.ReadInt32();
-            element.ornaments = new List<List10>(element.list10_count);
+            element.ornaments = new List<ListToRead>(element.list10_count);
             for (int i = 0; i < element.list10_count; i++)
             {
-                element.ornaments.Add(new List10());
+                element.ornaments.Add(new ListToRead());
                 element.ornaments[i].id = read.ReadInt32();
                 read.BaseStream.Position += 8;
                 element.ornaments[i].name = read.ReadBytes(64);
@@ -375,7 +339,7 @@ namespace gShopEditor
                 element.ornaments[i].surface = read.ReadBytes(128);
                 if (element.version == 12)
                     read.BaseStream.Position += 696;
-                else if (element.version == 60)
+                else if (element.version > 12 && element.version <= 101)
                     read.BaseStream.Position += 708;
             }
             element.list11_count = read.ReadInt32();
@@ -383,10 +347,10 @@ namespace gShopEditor
             element.list12_count = read.ReadInt32();
             getChangePos(read, element.list12_count, 68);
             element.list13_count = read.ReadInt32();
-            element.remedies = new List<List13>(element.list13_count);
+            element.remedies = new List<ListToRead>(element.list13_count);
             for (int i = 0; i < element.list13_count; i++)
             {
-                element.remedies.Add(new List13());
+                element.remedies.Add(new ListToRead());
                 element.remedies[i].id = read.ReadInt32();
                 read.BaseStream.Position += 8;
                 element.remedies[i].name = read.ReadBytes(64);
@@ -400,10 +364,10 @@ namespace gShopEditor
             element.list15_count = read.ReadInt32();
             getChangePos(read, element.list15_count, 68);
             element.list16_count = read.ReadInt32();
-            element.materials = new List<List16>(element.list16_count);
+            element.materials = new List<ListToRead>(element.list16_count);
             for (int i = 0; i < element.list16_count; i++)
             {
-                element.materials.Add(new List16());
+                element.materials.Add(new ListToRead());
                 element.materials[i].id = read.ReadInt32();
                 read.BaseStream.Position += 8;
                 element.materials[i].name = read.ReadBytes(64);
@@ -415,10 +379,10 @@ namespace gShopEditor
             element.list17_count = read.ReadInt32();
             getChangePos(read, element.list17_count, 68);
             element.list18_count = read.ReadInt32();
-            element.atk_hierogr = new List<List18>(element.list18_count);
+            element.atk_hierogr = new List<ListToRead>(element.list18_count);
             for (int i = 0; i < element.list18_count; i++)
             {
-                element.atk_hierogr.Add(new List18());
+                element.atk_hierogr.Add(new ListToRead());
                 element.atk_hierogr[i].id = read.ReadInt32();
                 read.BaseStream.Position += 4;
                 element.atk_hierogr[i].name = read.ReadBytes(64);
@@ -430,10 +394,10 @@ namespace gShopEditor
             element.list19_count = read.ReadInt32();
             getChangePos(read, element.list19_count, 68);
             element.list20_count = read.ReadInt32();
-            element.def_hierogr = new List<List20>(element.list20_count);
+            element.def_hierogr = new List<ListToRead>(element.list20_count);
             for (int i = 0; i < element.list20_count; i++)
             {
-                element.def_hierogr.Add(new List20());
+                element.def_hierogr.Add(new ListToRead());
                 element.def_hierogr[i].id = read.ReadInt32();
                 read.BaseStream.Position += 4;
                 element.def_hierogr[i].name = read.ReadBytes(64);
@@ -446,10 +410,10 @@ namespace gShopEditor
             element.list21_count = read.ReadInt32();
             getChangePos(read, element.list21_count, 68);
             element.list22_count = read.ReadInt32();
-            element.skills = new List<List22>(element.list22_count);
+            element.skills = new List<ListToRead>(element.list22_count);
             for (int i = 0; i < element.list22_count; i++)
             {
-                element.skills.Add(new List22());
+                element.skills.Add(new ListToRead());
                 element.skills[i].id = read.ReadInt32();
                 read.BaseStream.Position += 4;
                 element.skills[i].name = read.ReadBytes(64);
@@ -459,10 +423,10 @@ namespace gShopEditor
                     read.BaseStream.Position += 20;
             }
             element.list23_count = read.ReadInt32();
-            element.flyes = new List<List23>(element.list23_count);
+            element.flyes = new List<ListToRead>(element.list23_count);
             for (int i = 0; i < element.list23_count; i++)
             {
-                element.flyes.Add(new List23());
+                element.flyes.Add(new ListToRead());
                 element.flyes[i].id = read.ReadInt32();
                 element.flyes[i].name = read.ReadBytes(64);
                 read.BaseStream.Position += 256;
@@ -479,10 +443,10 @@ namespace gShopEditor
             element.list26_count = read.ReadInt32();
             getChangePos(read, element.list26_count, 4);
             element.list27_count = read.ReadInt32();
-            element.key_items=new List<List27>(element.list27_count);
+            element.key_items = new List<ListToRead>(element.list27_count);
             for (int i = 0; i < element.list27_count; i++)
             {
-                element.key_items.Add(new List27());
+                element.key_items.Add(new ListToRead());
                 element.key_items[i].id = read.ReadInt32();
                 element.key_items[i].name = read.ReadBytes(64);
                 read.BaseStream.Position += 128;
@@ -493,10 +457,10 @@ namespace gShopEditor
             element.list28_count = read.ReadInt32();
             getChangePos(read, element.list28_count, 348);
             element.list29_count = read.ReadInt32();
-            element.quest_items = new List<List29>(element.list29_count);
+            element.quest_items = new List<ListToRead>(element.list29_count);
             for (int i = 0; i < element.list29_count; i++)
             {
-                element.quest_items.Add(new List29());
+                element.quest_items.Add(new ListToRead());
                 element.quest_items[i].id = read.ReadInt32();
                 element.quest_items[i].name = read.ReadBytes(64);
                 element.quest_items[i].surface = read.ReadBytes(128);
@@ -508,10 +472,10 @@ namespace gShopEditor
             element.list31_count = read.ReadInt32();
             getChangePos(read, element.list31_count, 68);
             element.list32_count = read.ReadInt32();
-            element.ammo = new List<List32>(element.list32_count);
+            element.ammo = new List<ListToRead>(element.list32_count);
             for (int i = 0; i < element.list32_count; i++)
             {
-                element.ammo.Add(new List32());
+                element.ammo.Add(new ListToRead());
                 element.ammo[i].id = read.ReadInt32();
                 read.BaseStream.Position += 4;
                 element.ammo[i].name = read.ReadBytes(192);
@@ -527,10 +491,10 @@ namespace gShopEditor
             element.list35_count = read.ReadInt32();
             getChangePos(read, element.list35_count, 68);
             element.list36_count = read.ReadInt32();
-            element.soulgems = new List<List36>(element.list36_count);
+            element.soulgems = new List<ListToRead>(element.list36_count);
             for (int i = 0; i < element.list36_count; i++)
             {
-                element.soulgems.Add(new List36());
+                element.soulgems.Add(new ListToRead());
                 element.soulgems[i].id = read.ReadInt32();
                 read.BaseStream.Position += 4;
                 element.soulgems[i].name = read.ReadBytes(64);
@@ -634,10 +598,10 @@ namespace gShopEditor
             element.list75_count = read.ReadInt32();
             getChangePos(read, element.list75_count, 404);
             element.list76_count = read.ReadInt32();
-            element.quest_rewards = new List<List76>(element.list76_count);
+            element.quest_rewards = new List<ListToRead>(element.list76_count);
             for (int i = 0; i < element.list76_count; i++)
             {
-                element.quest_rewards.Add(new List76());
+                element.quest_rewards.Add(new ListToRead());
                 element.quest_rewards[i].id = read.ReadInt32();
                 element.quest_rewards[i].name = read.ReadBytes(64);
                 read.BaseStream.Position += 128;
@@ -652,10 +616,10 @@ namespace gShopEditor
             element.list79_count = read.ReadInt32();
             getChangePos(read, element.list79_count, 68);
             element.list80_count = read.ReadInt32();
-            element.resources = new List<List80>(element.list80_count);
+            element.resources = new List<ListToRead>(element.list80_count);
             for (int i = 0; i < element.list80_count; i++)
             {
-                element.resources.Add(new List80());
+                element.resources.Add(new ListToRead());
                 element.resources[i].id = read.ReadInt32();
                 read.BaseStream.Position += 4;
                 element.resources[i].name = read.ReadBytes(64);
@@ -668,10 +632,10 @@ namespace gShopEditor
             element.list83_count = read.ReadInt32();
             getChangePos(read, element.list83_count, 72);
             element.list84_count = read.ReadInt32();
-            element.fashion = new List<List84>(element.list84_count);
+            element.fashion = new List<ListToRead>(element.list84_count);
             for (int i = 0; i < element.list84_count; i++)
             {
-                element.fashion.Add(new List84());
+                element.fashion.Add(new ListToRead());
                 element.fashion[i].id = read.ReadInt32();
                 read.BaseStream.Position += 8;
                 element.fashion[i].name = read.ReadBytes(64);
@@ -702,10 +666,10 @@ namespace gShopEditor
             element.list95_count = read.ReadInt32();
             getChangePos(read, element.list95_count, 480);
             element.list96_count = read.ReadInt32();
-            element.pet_eggs = new List<List96>(element.list96_count);
+            element.pet_eggs = new List<ListToRead>(element.list96_count);
             for (int i = 0; i < element.list96_count; i++)
             {
-                element.pet_eggs.Add(new List96());
+                element.pet_eggs.Add(new ListToRead());
                 element.pet_eggs[i].id = read.ReadInt32();
                 element.pet_eggs[i].name = read.ReadBytes(64);
                 read.BaseStream.Position += 128;
@@ -713,10 +677,10 @@ namespace gShopEditor
                 read.BaseStream.Position += 304;
             }
             element.list97_count = read.ReadInt32();
-            element.pet_food = new List<List97>(element.list97_count);
+            element.pet_food = new List<ListToRead>(element.list97_count);
             for (int i = 0; i < element.list97_count; i++)
             {
-                element.pet_food.Add(new List97());
+                element.pet_food.Add(new ListToRead());
                 element.pet_food[i].id = read.ReadInt32();
                 element.pet_food[i].name = read.ReadBytes(64);
                 read.BaseStream.Position += 128;
@@ -726,10 +690,10 @@ namespace gShopEditor
             element.list98_count = read.ReadInt32();
             getChangePos(read, element.list98_count, 344);
             element.list99_count = read.ReadInt32();
-            element.fireworks = new List<List99>(element.list99_count);
+            element.fireworks = new List<ListToRead>(element.list99_count);
             for (int i = 0; i < element.list99_count; i++)
             {
-                element.fireworks.Add(new List99());
+                element.fireworks.Add(new ListToRead());
                 element.fireworks[i].id = read.ReadInt32();
                 element.fireworks[i].name = read.ReadBytes(64);
                 read.BaseStream.Position += 128;
@@ -752,10 +716,10 @@ namespace gShopEditor
             element.list106_count = read.ReadInt32();
             getChangePos(read, element.list106_count, 76);
             element.list107_count = read.ReadInt32();
-            element.potions = new List<List107>(element.list107_count);
+            element.potions = new List<ListToRead>(element.list107_count);
             for (int i = 0; i < element.list107_count; i++)
             {
-                element.potions.Add(new List107());
+                element.potions.Add(new ListToRead());
                 element.potions[i].id = read.ReadInt32();
                 element.potions[i].name = read.ReadBytes(64);
                 read.BaseStream.Position += 128;
@@ -763,10 +727,10 @@ namespace gShopEditor
                 read.BaseStream.Position += 32;
             }
             element.list108_count = read.ReadInt32();
-            element.refining = new List<List108>(element.list108_count);
+            element.refining = new List<ListToRead>(element.list108_count);
             for (int i = 0; i < element.list108_count; i++)
             {
-                element.refining.Add(new List108());
+                element.refining.Add(new ListToRead());
                 element.refining[i].id = read.ReadInt32();
                 element.refining[i].name = read.ReadBytes(64);
                 read.BaseStream.Position += 128;
@@ -782,10 +746,10 @@ namespace gShopEditor
             element.list112_count = read.ReadInt32();
             getChangePos(read, element.list112_count, 76);
             element.list113_count = read.ReadInt32();
-            element.heaven_books = new List<List113>(element.list113_count);
+            element.heaven_books = new List<ListToRead>(element.list113_count);
             for (int i = 0; i < element.list113_count; i++)
             {
-                element.heaven_books.Add(new List113());
+                element.heaven_books.Add(new ListToRead());
                 element.heaven_books[i].id = read.ReadInt32();
                 element.heaven_books[i].name = read.ReadBytes(64);
                 read.BaseStream.Position += 128;
@@ -793,10 +757,10 @@ namespace gShopEditor
                 read.BaseStream.Position += 60;
             }
             element.list114_count = read.ReadInt32();
-            element.chat_speakers = new List<List114>(element.list114_count);
+            element.chat_speakers = new List<ListToRead>(element.list114_count);
             for (int i = 0; i < element.list114_count; i++)
             {
-                element.chat_speakers.Add(new List114());
+                element.chat_speakers.Add(new ListToRead());
                 element.chat_speakers[i].id = read.ReadInt32();
                 element.chat_speakers[i].name = read.ReadBytes(64);
                 read.BaseStream.Position += 128;
@@ -804,10 +768,10 @@ namespace gShopEditor
                 read.BaseStream.Position += 24;
             }
             element.list115_count = read.ReadInt32();
-            element.mp_hierogr = new List<List115>(element.list115_count);
+            element.mp_hierogr = new List<ListToRead>(element.list115_count);
             for (int i = 0; i < element.list115_count; i++)
             {
-                element.mp_hierogr.Add(new List115());
+                element.mp_hierogr.Add(new ListToRead());
                 element.mp_hierogr[i].id = read.ReadInt32();
                 element.mp_hierogr[i].name = read.ReadBytes(64);
                 read.BaseStream.Position += 128;
@@ -815,10 +779,10 @@ namespace gShopEditor
                 read.BaseStream.Position += 32;
             }
             element.list116_count = read.ReadInt32();
-            element.hp_hierogr = new List<List116>(element.list116_count);
+            element.hp_hierogr = new List<ListToRead>(element.list116_count);
             for (int i = 0; i < element.list116_count; i++)
             {
-                element.hp_hierogr.Add(new List116());
+                element.hp_hierogr.Add(new ListToRead());
                 element.hp_hierogr[i].id = read.ReadInt32();
                 element.hp_hierogr[i].name = read.ReadBytes(64);
                 read.BaseStream.Position += 128;
@@ -826,10 +790,10 @@ namespace gShopEditor
                 read.BaseStream.Position += 32;
             }
             element.list117_count = read.ReadInt32();
-            element.multi_exp = new List<List117>(element.list117_count);
+            element.multi_exp = new List<ListToRead>(element.list117_count);
             for (int i = 0; i < element.list117_count; i++)
             {
-                element.multi_exp.Add(new List117());
+                element.multi_exp.Add(new ListToRead());
                 element.multi_exp[i].id = read.ReadInt32();
                 element.multi_exp[i].name = read.ReadBytes(64);
                 read.BaseStream.Position += 128;
@@ -837,10 +801,10 @@ namespace gShopEditor
                 read.BaseStream.Position += 24;
             }
             element.list118_count = read.ReadInt32();
-            element.teleport = new List<List118>(element.list118_count);
+            element.teleport = new List<ListToRead>(element.list118_count);
             for (int i = 0; i < element.list118_count; i++)
             {
-                element.teleport.Add(new List118());
+                element.teleport.Add(new ListToRead());
                 element.teleport[i].id = read.ReadInt32();
                 element.teleport[i].name = read.ReadBytes(64);
                 read.BaseStream.Position += 128;
@@ -848,10 +812,10 @@ namespace gShopEditor
                 read.BaseStream.Position += 20;
             }
             element.list119_count = read.ReadInt32();
-            element.dyes = new List<List119>(element.list119_count);
+            element.dyes = new List<ListToRead>(element.list119_count);
             for (int i = 0; i < element.list119_count; i++)
             {
-                element.dyes.Add(new List119());
+                element.dyes.Add(new ListToRead());
                 element.dyes[i].id = read.ReadInt32();
                 element.dyes[i].name = read.ReadBytes(64);
                 read.BaseStream.Position += 128;
