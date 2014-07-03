@@ -356,8 +356,7 @@ namespace gShopEditor
                 element.remedies[i].name = read.ReadBytes(64);
                 read.BaseStream.Position += 128;
                 element.remedies[i].surface = read.ReadBytes(128);
-                if (element.version <= 70)
-                    read.BaseStream.Position += 44;
+                read.BaseStream.Position += 44;
             }
             element.list14_count = read.ReadInt32();
             getChangePos(read, element.list14_count, 68);
@@ -373,8 +372,7 @@ namespace gShopEditor
                 element.materials[i].name = read.ReadBytes(64);
                 read.BaseStream.Position += 128;
                 element.materials[i].surface = read.ReadBytes(128);
-                if (element.version <= 60)
-                    read.BaseStream.Position += 36;
+                read.BaseStream.Position += 36;
             }
             element.list17_count = read.ReadInt32();
             getChangePos(read, element.list17_count, 68);
@@ -388,8 +386,7 @@ namespace gShopEditor
                 element.atk_hierogr[i].name = read.ReadBytes(64);
                 read.BaseStream.Position += 128;
                 element.atk_hierogr[i].surface = read.ReadBytes(128);
-                if (element.version <= 60)
-                    read.BaseStream.Position += 36;
+                read.BaseStream.Position += 36;
             }
             element.list19_count = read.ReadInt32();
             getChangePos(read, element.list19_count, 68);
@@ -403,10 +400,12 @@ namespace gShopEditor
                 element.def_hierogr[i].name = read.ReadBytes(64);
                 read.BaseStream.Position += 128;
                 element.def_hierogr[i].surface = read.ReadBytes(128);
-                if (element.version <= 60)
-                    read.BaseStream.Position += 296;
+                read.BaseStream.Position += 296;
             }
-            read.BaseStream.Position += 19;
+            if (element.version == 12)
+                read.BaseStream.Position += 19;
+            else if (element.version == 60)
+                read.BaseStream.Position += 23;
             element.list21_count = read.ReadInt32();
             getChangePos(read, element.list21_count, 68);
             element.list22_count = read.ReadInt32();
@@ -419,8 +418,7 @@ namespace gShopEditor
                 element.skills[i].name = read.ReadBytes(64);
                 read.BaseStream.Position += 128;
                 element.skills[i].surface = read.ReadBytes(128);
-                if (element.version <= 60)
-                    read.BaseStream.Position += 20;
+                read.BaseStream.Position += 20;
             }
             element.list23_count = read.ReadInt32();
             element.flyes = new List<ListToRead>(element.list23_count);
@@ -451,8 +449,7 @@ namespace gShopEditor
                 element.key_items[i].name = read.ReadBytes(64);
                 read.BaseStream.Position += 128;
                 element.key_items[i].surface = read.ReadBytes(128);
-                if (element.version <= 60)
-                    read.BaseStream.Position += 28;
+                read.BaseStream.Position += 28;
             }
             element.list28_count = read.ReadInt32();
             getChangePos(read, element.list28_count, 348);
@@ -464,8 +461,7 @@ namespace gShopEditor
                 element.quest_items[i].id = read.ReadInt32();
                 element.quest_items[i].name = read.ReadBytes(64);
                 element.quest_items[i].surface = read.ReadBytes(128);
-                if (element.version <= 60)
-                    read.BaseStream.Position += 12;
+                read.BaseStream.Position += 12;
             }
             element.list30_count = read.ReadInt32();
             getChangePos(read, element.list30_count, 888);
@@ -481,8 +477,7 @@ namespace gShopEditor
                 element.ammo[i].name = read.ReadBytes(192);
                 read.BaseStream.Position += 128;
                 element.ammo[i].surface = read.ReadBytes(128);
-                if (element.version <= 60)
-                    read.BaseStream.Position += 436;
+                read.BaseStream.Position += 436;
             }
             element.list33_count = read.ReadInt32();
             getChangePos(read, element.list33_count, 68);
@@ -500,8 +495,7 @@ namespace gShopEditor
                 element.soulgems[i].name = read.ReadBytes(64);
                 read.BaseStream.Position += 128;
                 element.soulgems[i].surface = read.ReadBytes(128);
-                if (element.version <= 60)
-                    read.BaseStream.Position += 108;
+                read.BaseStream.Position += 108;
             }
             element.list37_count = read.ReadInt32();
             if (element.version <= 60)
