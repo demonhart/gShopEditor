@@ -1069,7 +1069,7 @@ namespace gShopEditor
             OpenFileDialog open = new OpenFileDialog()
             {
                 InitialDirectory = "",
-                Filter = "elements.data|elements.data|Все файлы|*.*",
+                Filter = "elements.data|*elements*.data|Все файлы|*.*",
                 Title = "Загрузка elements.data"
             };
             if (open.ShowDialog() != DialogResult.Cancel)
