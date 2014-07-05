@@ -281,9 +281,7 @@ namespace gShopEditor
         private void elementsRead(BinaryReader read, Elements element)
         {  
             #region elements.data
-            short ver = read.ReadInt16();
-            read.BaseStream.Position = 12;
-            element = reader.getElementsReader(element, ver, read);
+            element = reader.getElementsReader(element, read);
             /*
             element.version = read.ReadInt16();
             element.unk = read.ReadInt16();
