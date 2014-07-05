@@ -23,6 +23,7 @@ namespace gShopEditor
         public gShop_126 gshop_126 = new gShop_126();
         public gShop_14x_Client gshop_14x_client = new gShop_14x_Client();
         gShop_14x_Server gshop14x_server = new gShop_14x_Server();
+        ElementsReader reader = new ElementsReader();
 
         private void открытьToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -278,8 +279,12 @@ namespace gShopEditor
         }
 
         private void elementsRead(BinaryReader read, Elements element)
-        {
+        {  
             #region elements.data
+            short ver = read.ReadInt16();
+            read.BaseStream.Position = 12;
+            element = reader.getElementsReader(element, ver, read);
+            /*
             element.version = read.ReadInt16();
             element.unk = read.ReadInt16();
             element.unk2 = read.ReadInt32();
@@ -816,7 +821,8 @@ namespace gShopEditor
                 element.dyes[i].surface = read.ReadBytes(128);
                 read.BaseStream.Position += 44;
             }
-            #endregion
+            */
+            #endregion      
         }
 
         private void getChangePos(BinaryReader read, int count, long position)
