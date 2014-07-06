@@ -11,6 +11,7 @@ namespace gShopEditor
     {
         public Elements getElementsReader(Elements element, BinaryReader read)
         {
+            List<Dialogs> dialogs = new List<Dialogs>();
             read.BaseStream.Position = 0;
             int version = read.ReadInt16();
             read.BaseStream.Position += 6;
@@ -77,18 +78,7 @@ namespace gShopEditor
                                 }
                             case 20:
                                 {
-                                    if (version == 12 || version == 60)
-                                        read.BaseStream.Position += 19;
-                                    else if (version == 63 || version == 85 || version == 101)
-                                        read.BaseStream.Position += 22;
-                                    else if (version == 69 || version == 70)
-                                        read.BaseStream.Position += 27;
-                                    //else if (version == 80)
-                                    //read.BaseStream.Position += ??;
-                                    else if (version == 85)
-                                        read.BaseStream.Position += 18;
-                                    else if (version == 88)
-                                        read.BaseStream.Position += 20;
+                                    getCheckPos(read, 145, 1);
                                     element.list21_count = read.ReadInt32();
                                     read.BaseStream.Position += 68 * element.list21_count;
                                     break;
@@ -134,18 +124,32 @@ namespace gShopEditor
                                 }
                             case 58:
                                 {
-                                    if (version == 12 )
-                                        read.BaseStream.Position += 3294304;
-                                    else if (version == 60)
-                                        read.BaseStream.Position += 3451256;
-                                    else if (version == 63)
-                                        read.BaseStream.Position += 2097354;
-                                    else if (version == 69)
-                                        read.BaseStream.Position += 3454290;
-                                    else if (version == 70)
-                                        read.BaseStream.Position += 3448546;
-                                    else if (version == 88)
-                                        read.BaseStream.Position += 3390202;
+                                    int dialogs_count = read.ReadInt32();
+                                    for (int j = 0; j < dialogs_count; j++)
+                                    {
+                                        dialogs.Add(new Dialogs());
+                                        dialogs[j].id_talk = read.ReadUInt32();
+                                        dialogs[j].text = read.ReadBytes(128);
+                                        dialogs[j].num_window = read.ReadInt32();
+                                        dialogs[j].windows = new List<Dialogs.Windows>(dialogs[j].num_window);
+                                        for (int k = 0; k < dialogs[j].num_window; k++)
+                                        {
+                                            dialogs[j].windows.Add(new Dialogs.Windows());
+                                            dialogs[j].windows[k].id = read.ReadUInt32();
+                                            dialogs[j].windows[k].id_parent = read.ReadUInt32();
+                                            dialogs[j].windows[k].length = read.ReadInt32();
+                                            dialogs[j].windows[k].text = read.ReadBytes(dialogs[j].windows[k].length * 2);
+                                            dialogs[j].windows[k].num_option = read.ReadInt32();
+                                            dialogs[j].windows[k].options = new List<Dialogs.Options>(dialogs[j].windows[k].num_option);
+                                            for (int l = 0; l < dialogs[j].windows[k].num_option; l++)
+                                            {
+                                                dialogs[j].windows[k].options.Add(new Dialogs.Options());
+                                                dialogs[j].windows[k].options[l].id = read.ReadUInt32();
+                                                dialogs[j].windows[k].options[l].text = read.ReadBytes(128);
+                                                dialogs[j].windows[k].options[l].param = read.ReadUInt32();
+                                            }
+                                        }
+                                    }
                                     break;
                                 }
                             case 75:
@@ -196,14 +200,7 @@ namespace gShopEditor
                                 }
                             case 100:
                                 {
-                                    if (version == 12 || version == 69 || version == 70)
-                                        read.BaseStream.Position += 95;
-                                    else if (version == 60)
-                                        read.BaseStream.Position += 87;
-                                    else if (version == 63 || version == 85 || version == 101)
-                                        read.BaseStream.Position += 89;
-                                    else if (version == 88)
-                                        read.BaseStream.Position += 94;
+                                    getCheckPos(read, 45, 39);
                                     element.list100_count = read.ReadInt32();
                                     read.BaseStream.Position += 148 * element.list100_count;
                                     break;
@@ -353,6 +350,22 @@ namespace gShopEditor
                 MessageBox.Show("Ошибка при чтении листа [" + index + "]", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             return list;
+        }
+
+        private void getCheckPos(BinaryReader read, byte num1, byte num2)
+        {
+            byte number1 = 0;
+            while (true)
+            {
+                number1 = read.ReadByte();
+                if (number1 == num1)
+                {
+                    byte number2 = read.ReadByte();
+                    if (number2 == num2)
+                        break;
+                }
+            }
+            read.BaseStream.Position -= 6;
         }
     }
 }

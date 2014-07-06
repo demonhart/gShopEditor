@@ -193,4 +193,29 @@ namespace gShopEditor.Structure
         public byte[] name;
         public byte[] surface;
     }
+
+    public class Dialogs
+    {
+        public uint id_talk;
+        public byte[] text; //64
+        public int num_window;
+        public List<Windows> windows;
+
+        public class Windows
+        {
+            public uint id;
+            public uint id_parent;
+            public int length;
+            public byte[] text; //length
+            public int num_option;
+            public List<Options> options;
+        }
+
+        public class Options
+        {
+            public uint id;
+            public byte[] text; //64
+            public uint param;
+        }
+    }
 }
