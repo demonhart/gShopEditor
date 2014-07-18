@@ -397,7 +397,62 @@ namespace gShopEditor
                         shop_126.items[max_id].local_id = max_id;
                         shop_126.items[max_id].main_type = cat_index;
                         shop_126.items[max_id].sub_type = sub_cat_index;
-                        shop_126.items[max_id].icon = new byte[128];
+                        if (radioButton1.Checked)
+                            shop_126.items[max_id].icon = elem.weapons[i].surface;
+                        else if (radioButton2.Checked)
+                            shop_126.items[max_id].icon = elem.armor[i].surface;
+                        else if (radioButton3.Checked)
+                            shop_126.items[max_id].icon = elem.ornaments[i].surface;
+                        else if (radioButton4.Checked)
+                            shop_126.items[max_id].icon = elem.remedies[i].surface;
+                        else if (radioButton5.Checked)
+                            shop_126.items[max_id].icon = elem.materials[i].surface;
+                        else if (radioButton6.Checked)
+                            shop_126.items[max_id].icon = elem.atk_hierogr[i].surface;
+                        else if (radioButton7.Checked)
+                            shop_126.items[max_id].icon = elem.def_hierogr[i].surface;
+                        else if (radioButton8.Checked)
+                            shop_126.items[max_id].icon = elem.skills[i].surface;
+                        else if (radioButton9.Checked)
+                            shop_126.items[max_id].icon = elem.flyes[i].surface;
+                        else if (radioButton10.Checked)
+                            shop_126.items[max_id].icon = elem.key_items[i].surface;
+                        else if (radioButton11.Checked)
+                            shop_126.items[max_id].icon = elem.quest_items[i].surface;
+                        else if (radioButton12.Checked)
+                            shop_126.items[max_id].icon = elem.ammo[i].surface;
+                        else if (radioButton13.Checked)
+                            shop_126.items[max_id].icon = elem.soulgems[i].surface;
+                        else if (radioButton14.Checked)
+                            shop_126.items[max_id].icon = elem.quest_rewards[i].surface;
+                        else if (radioButton15.Checked)
+                            shop_126.items[max_id].icon = elem.resources[i].surface;
+                        else if (radioButton16.Checked)
+                            shop_126.items[max_id].icon = elem.fashion[i].surface;
+                        else if (radioButton17.Checked)
+                            shop_126.items[max_id].icon = elem.pet_eggs[i].surface;
+                        else if (radioButton18.Checked)
+                            shop_126.items[max_id].icon = elem.pet_food[i].surface;
+                        else if (radioButton19.Checked)
+                            shop_126.items[max_id].icon = elem.fireworks[i].surface;
+                        else if (radioButton20.Checked)
+                            shop_126.items[max_id].icon = elem.potions[i].surface;
+                        else if (radioButton21.Checked)
+                            shop_126.items[max_id].icon = elem.refining[i].surface;
+                        else if (radioButton22.Checked)
+                            shop_126.items[max_id].icon = elem.heaven_books[i].surface;
+                        else if (radioButton23.Checked)
+                            shop_126.items[max_id].icon = elem.chat_speakers[i].surface;
+                        else if (radioButton24.Checked)
+                            shop_126.items[max_id].icon = elem.mp_hierogr[i].surface;
+                        else if (radioButton25.Checked)
+                            shop_126.items[max_id].icon = elem.hp_hierogr[i].surface;
+                        else if (radioButton26.Checked)
+                            shop_126.items[max_id].icon = elem.multi_exp[i].surface;
+                        else if (radioButton27.Checked)
+                            shop_126.items[max_id].icon = elem.teleport[i].surface;
+                        else if (radioButton28.Checked)
+                            shop_126.items[max_id].icon = elem.dyes[i].surface;
                         shop_126.items[max_id].item_id = Convert.ToUInt32(dataGridView1[0, i].Value);
                         shop_126.items[max_id].item_count = 1;
                         shop_126.items[max_id].sell_options = new List<Sell_options>(4);
@@ -421,7 +476,7 @@ namespace gShopEditor
                 shop_126.item_count = max_id;
                 frm.gshop_126 = shop_126;
             }
-            else if (type==2)
+            else if (type == 2)
             {
                 int max_id = shop_14x_client.item_count;
                 for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
@@ -432,7 +487,62 @@ namespace gShopEditor
                         shop_14x_client.items[max_id].local_id = max_id;
                         shop_14x_client.items[max_id].main_type = cat_index;
                         shop_14x_client.items[max_id].sub_type = sub_cat_index;
-                        shop_14x_client.items[max_id].icon = new byte[128];
+                        if (radioButton1.Checked)
+                            shop_14x_client.items[max_id].icon = elem.weapons[i].surface;
+                        else if (radioButton2.Checked)
+                            shop_14x_client.items[max_id].icon = elem.armor[i].surface;
+                        else if (radioButton3.Checked)
+                            shop_14x_client.items[max_id].icon = elem.ornaments[i].surface;
+                        else if (radioButton4.Checked)
+                            shop_14x_client.items[max_id].icon = elem.remedies[i].surface;
+                        else if (radioButton5.Checked)
+                            shop_14x_client.items[max_id].icon = elem.materials[i].surface;
+                        else if (radioButton6.Checked)
+                            shop_14x_client.items[max_id].icon = elem.atk_hierogr[i].surface;
+                        else if (radioButton7.Checked)
+                            shop_14x_client.items[max_id].icon = elem.def_hierogr[i].surface;
+                        else if (radioButton8.Checked)
+                            shop_14x_client.items[max_id].icon = elem.skills[i].surface;
+                        else if (radioButton9.Checked)
+                            shop_14x_client.items[max_id].icon = elem.flyes[i].surface;
+                        else if (radioButton10.Checked)
+                            shop_14x_client.items[max_id].icon = elem.key_items[i].surface;
+                        else if (radioButton11.Checked)
+                            shop_14x_client.items[max_id].icon = elem.quest_items[i].surface;
+                        else if (radioButton12.Checked)
+                            shop_14x_client.items[max_id].icon = elem.ammo[i].surface;
+                        else if (radioButton13.Checked)
+                            shop_14x_client.items[max_id].icon = elem.soulgems[i].surface;
+                        else if (radioButton14.Checked)
+                            shop_14x_client.items[max_id].icon = elem.quest_rewards[i].surface;
+                        else if (radioButton15.Checked)
+                            shop_14x_client.items[max_id].icon = elem.resources[i].surface;
+                        else if (radioButton16.Checked)
+                            shop_14x_client.items[max_id].icon = elem.fashion[i].surface;
+                        else if (radioButton17.Checked)
+                            shop_14x_client.items[max_id].icon = elem.pet_eggs[i].surface;
+                        else if (radioButton18.Checked)
+                            shop_14x_client.items[max_id].icon = elem.pet_food[i].surface;
+                        else if (radioButton19.Checked)
+                            shop_14x_client.items[max_id].icon = elem.fireworks[i].surface;
+                        else if (radioButton20.Checked)
+                            shop_14x_client.items[max_id].icon = elem.potions[i].surface;
+                        else if (radioButton21.Checked)
+                            shop_14x_client.items[max_id].icon = elem.refining[i].surface;
+                        else if (radioButton22.Checked)
+                            shop_14x_client.items[max_id].icon = elem.heaven_books[i].surface;
+                        else if (radioButton23.Checked)
+                            shop_14x_client.items[max_id].icon = elem.chat_speakers[i].surface;
+                        else if (radioButton24.Checked)
+                            shop_14x_client.items[max_id].icon = elem.mp_hierogr[i].surface;
+                        else if (radioButton25.Checked)
+                            shop_14x_client.items[max_id].icon = elem.hp_hierogr[i].surface;
+                        else if (radioButton26.Checked)
+                            shop_14x_client.items[max_id].icon = elem.multi_exp[i].surface;
+                        else if (radioButton27.Checked)
+                            shop_14x_client.items[max_id].icon = elem.teleport[i].surface;
+                        else if (radioButton28.Checked)
+                            shop_14x_client.items[max_id].icon = elem.dyes[i].surface;
                         shop_14x_client.items[max_id].item_id = Convert.ToUInt32(dataGridView1[0, i].Value);
                         shop_14x_client.items[max_id].item_count = 1;
                         shop_14x_client.items[max_id].sell_options = new List<Sell_options_1>(4);
