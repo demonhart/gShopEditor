@@ -15,7 +15,7 @@ namespace gShopEditor
             read.BaseStream.Position = 0;
             int version = read.ReadInt16();
             read.BaseStream.Position += 6;
-            if (version == 12 || version == 60 || version == 63 || version == 69 || version == 70 || version == 85 || version == 88 || version == 101)
+            if (version > 7 && version <= 101)
             {
                 using (StreamReader elRead = new StreamReader("configs/PW_v" + version + ".cfg"))
                 {

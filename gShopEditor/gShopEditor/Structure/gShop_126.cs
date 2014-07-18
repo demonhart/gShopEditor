@@ -38,6 +38,11 @@ namespace gShopEditor.Structure
     {
         public byte[] cat_name;
         public int sub_cat_count;
-        public byte[][] sub_cat_name;
+        public List<SubCat_Sett> subcat;
+    }
+
+    public class SubCat_Sett
+    {
+        public byte[] sub_cat_name;
     }
 }
